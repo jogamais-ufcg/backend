@@ -1,9 +1,9 @@
-package com.jogamais.ufcg.exception;
+package com.jogamais.ufcg.exceptions;
 
-public class CustomErrorType {
+public class CustomTypeError {
     private String errorMessage;
 
-    public CustomErrorType(String errorMessage) {
+    public CustomTypeError(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
