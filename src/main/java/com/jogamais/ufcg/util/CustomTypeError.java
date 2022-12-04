@@ -1,4 +1,4 @@
-package com.jogamais.ufcg.exceptions;
+package com.jogamais.ufcg.util;
 
 public class CustomTypeError {
     private String errorMessage;
