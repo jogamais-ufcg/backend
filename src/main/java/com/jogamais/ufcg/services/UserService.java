@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/*
 @Service
-public class UserService implements IService<>{
+public class UserService implements IService<User>{
 
     @Autowired
     private UserRepository userRepository;
@@ -33,3 +33,5 @@ public class UserService implements IService<>{
 
     }
 }
+*/
+
