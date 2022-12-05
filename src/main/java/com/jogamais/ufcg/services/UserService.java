@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements IService{
+public class UserService implements IService<User>{
 
     @Autowired
     private UserRepository userRepository;
