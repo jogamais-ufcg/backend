@@ -11,7 +11,7 @@ public interface IService<T> {
 
 	public abstract void save(User user) throws UserException;
 
-	public abstract void delete(User user) throws UserException;
+	//public abstract void delete(User user) throws UserException;
 
 	//public abstract void deleteById(Long id);
 

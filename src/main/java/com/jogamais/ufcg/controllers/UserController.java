@@ -1,8 +1,9 @@
 package com.jogamais.ufcg.controllers;
 
-import com.jogamais.ufcg.exceptions.InternalUserError;
+import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
+import com.jogamais.ufcg.utils.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,22 +20,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<?> getById(@RequestParam Long id) {
         try {
             User user = userService.getById(id);
             return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (UserException e) {
-            return UserError.errorUserNotExist();
-        }
-
-    }
-
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<?> save(@RequestBody User user, UriComponentsBuilder ucBuilder) {
-        try {
-            userService.delete(user);
-            return new ResponseEntity<>("Usuário excluído com sucesso", HttpStatus.OK);
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }

@@ -16,8 +16,8 @@ public class UserService implements IService<User>{
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public ModelMapper modelMapper;
+    //@Autowired
+    //public ModelMapper modelMapper;
 
     public User getById(Long id) throws UserException {
         return userRepository.findById(id).orElseThrow(() -> new UserException());
@@ -28,7 +28,7 @@ public class UserService implements IService<User>{
     }
 
     //talvez isso esteja errado pois nao sei pegar por toda a entidade de uma vez
-    public void delete(User user) throws UserException {
+    /*public void delete(User user) throws UserException {
         User u = userRepository.findUser(user);
 
         if (u == null) {
@@ -37,7 +37,7 @@ public class UserService implements IService<User>{
 
         userRepository.delete(u);
 
-    }
+    }*/
 
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
@@ -46,8 +46,7 @@ public class UserService implements IService<User>{
 
     public List<User> findAll() throws UserException {
 
-        List<User> users = userRepository.findAll().stream().map(user -> modelMapper.map(user, User.class))
-                .collect(Collectors.toList());
+        List<User> users = userRepository.findAll();
 
         if (users.isEmpty()) {
             throw new UserException();
