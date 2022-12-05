@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-/*
+
 @Service
 public class UserService implements IService<User>{
 
@@ -15,10 +15,12 @@ public class UserService implements IService<User>{
 
     public User getById(Long id) {
 
+        return null;
     }
 
     public User save(User entity) {
 
+        return entity;
     }
 
     public void delete(User entity) {
@@ -31,7 +33,8 @@ public class UserService implements IService<User>{
 
     public List<User> findAll() {
 
+        return null;
     }
 }
-*/
+
 

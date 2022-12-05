@@ -3,7 +3,7 @@ package com.jogamais.ufcg.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class InternalUserErrorException {
+public class InternalUserErrorException extends Throwable {
 
     static final String USER_NOT_EXIST = "O usuário não cadastrado.";
 
