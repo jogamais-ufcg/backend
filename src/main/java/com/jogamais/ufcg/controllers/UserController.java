@@ -2,14 +2,14 @@ package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.exceptions.InternalUserErrorException;
 import com.jogamais.ufcg.models.User;
-//import com.jogamais.ufcg.services.UserService;
+import com.jogamais.ufcg.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/*
+
 @RestController
 @RequestMapping(value="/users")
 @CrossOrigin
@@ -49,4 +49,3 @@ public class UserController {
 
     }
 }
-*/
