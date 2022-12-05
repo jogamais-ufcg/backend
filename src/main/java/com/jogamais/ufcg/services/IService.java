@@ -1,16 +1,19 @@
 package com.jogamais.ufcg.services;
 
+import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.models.User;
+
 import java.util.List;
 
 public interface IService<T> {
 
-	public abstract T getById(Long id);
+	public Object getById(Long id) throws UserException;
 
-	public abstract T save(T entity);
+	public abstract void save(User user) throws UserException;
 
-	public abstract void delete(T entity);
+	public abstract void delete(User user) throws UserException;
 
-	public abstract void deleteById(Long id);
+	//public abstract void deleteById(Long id);
 
-	public abstract List<T> findAll();
+	public abstract List<T> findAll() throws UserException;
 }
