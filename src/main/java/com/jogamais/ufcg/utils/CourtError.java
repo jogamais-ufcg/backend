@@ -7,10 +7,9 @@ import java.util.Date;
 
 public class CourtError {
 
-    static final String UNAVAILABLE_APPOINTMENT = "O horário: %s não está disponível.";
+    static final String UNAVAILABLE_APPOINTMENT = "O horário: não está disponível.";
 
-    public static ResponseEntity<CustomTypeError> errorUnavailableAppointment(Date date) {
-        return new ResponseEntity<CustomTypeError>(new CustomTypeError(String.format(CourtError.UNAVAILABLE_APPOINTMENT,
-                date)), HttpStatus.CONFLICT);
+    public static ResponseEntity<CustomTypeError> errorUnavailableAppointment() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(CourtError.UNAVAILABLE_APPOINTMENT), HttpStatus.CONFLICT);
     }
 }

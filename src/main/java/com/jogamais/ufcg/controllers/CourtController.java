@@ -1,35 +1,18 @@
 package com.jogamais.ufcg.controllers;
 
-import com.jogamais.ufcg.exceptions.InternalUserErrorException;
-import com.jogamais.ufcg.models.Court;
-import com.jogamais.ufcg.services.CourtService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping(value="/users")
+@RequestMapping(value="/courts")
 @CrossOrigin
 public class CourtController {
-    @Autowired
-    private CourtService courtService;
 
-    @RequestMapping(value = "/courts", method = RequestMethod.GET)
+    @RequestMapping(value = "/court", method = RequestMethod.GET)
     public ResponseEntity<?> getById() {
 
-    }
-
-    @RequestMapping(value = "/courts", method = RequestMethod.POST)
-    public ResponseEntity<?> save(@RequestBody Court court, UriComponentsBuilder ucBuilder) throws InternalUserErrorException {
-        try {
-            Court addedCourt = courtService.save(court);
-            return new ResponseEntity<Court>(addedCourt, HttpStatus.OK);
-        } catch (InternalUserErrorException e) {
-            return CourtError.CourtNotFoundError(CourtId);
-        }
-
+        return null;
     }
 
     @RequestMapping(value = "/courts", method = RequestMethod.DELETE)
