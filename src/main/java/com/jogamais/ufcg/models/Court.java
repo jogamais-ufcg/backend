@@ -28,5 +28,8 @@ public class Court {
     @Column(name="DESCRIPTION", nullable = false)
     private String description;
 
-   // private CourtRules courtRules;
+    @Column(name="COURT_RULES", nullable = false)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "COURT_RULES_ID", referencedColumnName = "idCourtRules")
+    private CourtRules courtRules;
 }
