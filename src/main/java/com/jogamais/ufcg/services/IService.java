@@ -13,7 +13,7 @@ public interface IService<T> {
 
 	//public abstract void delete(User user) throws UserException;
 
-	//public abstract void deleteById(Long id);
+	public abstract void deleteById(Long id) throws UserException;
 
 	public abstract List<T> findAll() throws UserException;
 }
