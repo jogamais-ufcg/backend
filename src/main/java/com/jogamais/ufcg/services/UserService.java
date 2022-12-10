@@ -1,6 +1,5 @@
 package com.jogamais.ufcg.services;
 
-import org.modelmapper.ModelMapper;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
@@ -8,16 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IService<User>{
 
     @Autowired
     private UserRepository userRepository;
-
-    //@Autowired
-    //public ModelMapper modelMapper;
 
     public User getById(Long id) throws UserException {
         return userRepository.findById(id).orElseThrow(() -> new UserException());
@@ -44,13 +39,9 @@ public class UserService implements IService<User>{
         userRepository.delete(user);
     }
 
-    public List<User> findAll() throws UserException {
+    public List<User> findAll() {
 
         List<User> users = userRepository.findAll();
-
-        if (users.isEmpty()) {
-            throw new UserException();
-        }
         return users;
     }
 }
