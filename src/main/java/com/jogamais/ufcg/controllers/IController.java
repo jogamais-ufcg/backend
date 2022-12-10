@@ -17,7 +17,4 @@ public interface IController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<?> findAll();
-
-    /*@RequestMapping(value = "/", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete()*/
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping(value="/courts")
 @CrossOrigin
-public class CourtController {
+public class CourtController implements IController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getById(@PathVariable Long id) {
