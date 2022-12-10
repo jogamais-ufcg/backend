@@ -20,8 +20,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ResponseEntity<?> getById(@RequestParam Long id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         try {
             User user = userService.getById(id);
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -31,8 +31,8 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteById(@RequestParam Long id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         try {
             userService.deleteById(id);
             return new ResponseEntity<>("Usuário com ID: " + id + " removido com sucesso!", HttpStatus.OK);
@@ -41,7 +41,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll() {
         List<User> users;
 

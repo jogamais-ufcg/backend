@@ -13,12 +13,12 @@ import java.util.ArrayList;
 public class CourtController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getById(@PathVariable String id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteById(@PathVariable String id) {
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
