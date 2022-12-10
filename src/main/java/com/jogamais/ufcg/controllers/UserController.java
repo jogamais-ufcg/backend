@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value="/users")
@@ -45,12 +45,7 @@ public class UserController implements IController {
     public ResponseEntity<?> findAll() {
         List<User> users;
 
-        try {
-            users = userService.findAll();
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
-        catch (UserException e) {
-            return UserError.errorUserNotExist();
-        }
+        users = userService.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }
