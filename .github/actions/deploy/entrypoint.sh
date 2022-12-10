@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 # Install OpenJDK 18
-wget https://download.java.net/java/GA/jdk18/43f95e8614114aeaa8e8a5fcf20a682d/36/GPL/openjdk-18_linux-x64_bin.tar.gz
+wget https://download.java.net/java/GA/jdk18/43f95e8614114aeaa8e8a5fcf20a682d/36/GPL/openjdk-18_linux-x64_bin.tar.gz > /dev/null
 tar -xvf openjdk-18_linux-x64_bin.tar.gz
 mv jdk-18* /opt/
 export JAVA_HOME=/opt/jdk-18
