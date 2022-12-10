@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Maven Project
-        uses: ./.github/actions/build
+        uses: ./.github/actions/mvn-build
 
       - name: Stop backend service
         uses: garygrossgarten/github-action-ssh@release
