@@ -13,8 +13,8 @@ update-alternatives --install "/usr/bin/javac" "javac" "/opt/jdk-18/bin/javac" 1
 echo "$1" >> key.pem
 
 # Build Maven project
-./mvnw clean install
-./mvnw clean package -Dmaven.test.skip spring-boot:repackage -X
+./mvnw clean install > /dev/null
+./mvnw clean package -Dmaven.test.skip spring-boot:repackage -X > /dev/null
 
 # Stop backend service
 ssh -i ./key.pem ec2-user@ec2-52-91-233-221.compute-1.amazonaws.com "sudo systemctl stop jogamais"
