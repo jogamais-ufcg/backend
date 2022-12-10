@@ -1,35 +1,29 @@
 package com.jogamais.ufcg.controllers;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping(value="/courts")
 @CrossOrigin
 public class CourtController {
 
-    @RequestMapping(value = "/court", method = RequestMethod.GET)
-    public ResponseEntity<?> getById() {
-
-        return null;
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getById(@PathVariable String id) {
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/courts", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete() {
-
-        return null;
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteById(@PathVariable String id) {
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/courts/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteById() {
-
-        return null;
-    }
-
-    @RequestMapping(value = "/courts", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll() {
-
-        return null;
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
 }
