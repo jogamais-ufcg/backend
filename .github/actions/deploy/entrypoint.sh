@@ -11,6 +11,8 @@ update-alternatives --install "/usr/bin/javac" "javac" "/opt/jdk-18/bin/javac" 1
 
 # Save key file
 echo "$1" >> key.pem
+chmod 400 ./key.pem
+cat ./key.pem
 
 # Build Maven project
 ./mvnw clean install > /dev/null
