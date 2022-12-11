@@ -11,7 +11,7 @@ update-alternatives --install "/usr/bin/javac" "javac" "/opt/jdk-18/bin/javac" 1
 
 # Build Maven project
 ./mvnw clean install > /dev/null
-./mvnw clean package -Dmaven.test.skip spring-boot:repackage -X
+./mvnw clean package -Dmaven.test.skip spring-boot:repackage
 
 mkdir output
 mv ./target/ufcg-0.0.1-SNAPSHOT.jar ./output
