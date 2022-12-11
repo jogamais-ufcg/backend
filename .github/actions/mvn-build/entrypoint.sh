@@ -9,8 +9,9 @@ export PATH=$PATH:$JAVA_HOME/bin
 update-alternatives --install "/usr/bin/java" "java" "/opt/jdk-18/bin/java" 1
 update-alternatives --install "/usr/bin/javac" "javac" "/opt/jdk-18/bin/javac" 1
 
+echo "✅ Java 18 installed!"
+
 # Build Maven project
-./mvnw clean install > /dev/null
 ./mvnw clean package -Dmaven.test.skip spring-boot:repackage
 
 mkdir output
