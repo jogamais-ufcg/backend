@@ -1,7 +1,5 @@
 package com.jogamais.ufcg.controllers;
 
-import com.jogamais.ufcg.dto.UserDTO;
-import com.jogamais.ufcg.dto.UserResponseDTO;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
@@ -12,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value="/users")

@@ -1,16 +1,18 @@
 package com.jogamais.ufcg.services;
 
-import com.jogamais.ufcg.dto.UserDTO;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService implements IService<User>{
+public class UserService implements UserDetailsService, IService<User>{
 
     @Autowired
     private UserRepository userRepository;
@@ -32,5 +34,16 @@ public class UserService implements IService<User>{
 
         List<User> users = userRepository.findAll();
         return users;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        var user = userRepository.findByUserName(username);
+        if (user != null) {
+            return user;
+        } else {
+            throw new UsernameNotFoundException("Username " + username + " not found!");
+        }
     }
 }
