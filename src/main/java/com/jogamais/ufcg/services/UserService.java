@@ -22,18 +22,6 @@ public class UserService implements IService<User>{
         userRepository.save(user);
     }
 
-    //talvez isso esteja errado pois nao sei pegar por toda a entidade de uma vez
-    /*public void delete(User user) throws UserException {
-        User u = userRepository.findUser(user);
-
-        if (u == null) {
-           throw new UserException();
-        }
-
-        userRepository.delete(u);
-
-    }*/
-
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
         userRepository.delete(user);

@@ -19,7 +19,7 @@ public class CourtController implements IController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return new ResponseEntity<>("foi atualizado", HttpStatus.OK);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)

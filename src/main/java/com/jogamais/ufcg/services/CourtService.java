@@ -20,11 +20,7 @@ public class CourtService implements IService<Court> {
     public void save(Court court) {
         courtRepository.save(court);
     }
-/*
-    public void delete(Court entity) {
 
-    }
-*/
     public void deleteById(Long id) {
 
     }
