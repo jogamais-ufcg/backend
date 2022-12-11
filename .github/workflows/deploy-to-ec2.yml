@@ -35,7 +35,7 @@ jobs:
       - name: Start backend service
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: sudo systemctl stop jogamais
+          command: sudo systemctl start jogamais
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           privateKey: ${{ secrets.EC2_SSH_KEY }}
