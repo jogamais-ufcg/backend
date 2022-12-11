@@ -1,5 +1,7 @@
 package com.jogamais.ufcg.controllers;
 
+import com.jogamais.ufcg.dto.UserDTO;
+import com.jogamais.ufcg.dto.UserResponseDTO;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
@@ -24,7 +26,7 @@ public class UserController implements IController {
     public ResponseEntity<?> getById(@PathVariable Long id) {
         try {
             User user = userService.getById(id);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(new UserResponseDTO(user), HttpStatus.OK);
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }
@@ -43,9 +45,16 @@ public class UserController implements IController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll() {
-        List<User> users;
+        List<User> users = userService.findAll();
+        List<UserResponseDTO> response = users.stream().map(UserResponseDTO::new).toList();
 
-        users = userService.findAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> create(@RequestBody UserDTO userDTO) {
+        User createdUser = userService.create(userDTO.getModel());
+        UserResponseDTO response = new UserResponseDTO(createdUser);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

@@ -9,7 +9,7 @@ public interface IService<T> {
 
 	public abstract Object getById(Long id) throws UserException;
 
-	public abstract void save(T entity) throws UserException;
+	public abstract T create(T entity) throws UserException;
 
 	public abstract void deleteById(Long id) throws UserException;
 

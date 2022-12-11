@@ -17,8 +17,8 @@ public class CourtService implements IService<Court> {
         return null;
     }
 
-    public void save(Court court) {
-        courtRepository.save(court);
+    public Court create(Court court) {
+        return courtRepository.save(court);
     }
 
     public void deleteById(Long id) {

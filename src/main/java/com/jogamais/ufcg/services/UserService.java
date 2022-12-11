@@ -1,5 +1,6 @@
 package com.jogamais.ufcg.services;
 
+import com.jogamais.ufcg.dto.UserDTO;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
@@ -15,11 +16,11 @@ public class UserService implements IService<User>{
     private UserRepository userRepository;
 
     public User getById(Long id) throws UserException {
-        return userRepository.findById(id).orElseThrow(() -> new UserException());
+        return userRepository.findById(id).orElseThrow(UserException::new);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User create(User user) {
+        return userRepository.save(user);
     }
 
     public void deleteById(Long id) throws UserException {

@@ -26,4 +26,5 @@ public class CourtController implements IController {
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
+
 }

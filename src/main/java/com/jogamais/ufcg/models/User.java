@@ -3,6 +3,7 @@ package com.jogamais.ufcg.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Data
@@ -31,6 +32,18 @@ public class User {
 
     @Column(name="PASSWORD", nullable = false)
     private String password;
+
+    @Column(name="IS_UFCG_MEMBER", nullable = false)
+    private Boolean isUFCGMember;
+
+    @Column(name="IS_STUDENT", nullable = false)
+    private Boolean isStudent;
+
+    @Column(name="IS_ADMIN")
+    private Boolean isAdmin = false;
+
+    @Column(name="VALID_UNTIL", nullable = false)
+    private Date validUntil;
 
     @Column(name="CONFIRMED", nullable = false)
     private Boolean isConfirmed;
