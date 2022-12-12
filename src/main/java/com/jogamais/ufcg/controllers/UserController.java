@@ -1,5 +1,7 @@
 package com.jogamais.ufcg.controllers;
 
+import com.jogamais.ufcg.dto.UserDTO;
+import com.jogamais.ufcg.dto.UserResponseDTO;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;

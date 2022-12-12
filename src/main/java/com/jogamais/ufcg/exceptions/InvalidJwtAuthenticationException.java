@@ -10,7 +10,7 @@ public class InvalidJwtAuthenticationException extends AuthenticationException {
         super(msg);
     }
 
-    static final String INVALID_JWT_AUTHENTICATION = "Token JWT Inválido.";
+    static final String INVALID_JWT_AUTHENTICATION = "Token JWT Inválido ou expirado.";
 
     public static ResponseEntity<CustomTypeErrorException> errorInvalidJwtAuthentication() {
         return new ResponseEntity<CustomTypeErrorException>(new CustomTypeErrorException(InvalidJwtAuthenticationException.INVALID_JWT_AUTHENTICATION), HttpStatus.FORBIDDEN);
