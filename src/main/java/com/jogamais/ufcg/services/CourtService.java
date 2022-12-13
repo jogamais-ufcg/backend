@@ -12,21 +12,21 @@ public class CourtService implements IService<Court> {
     @Autowired
     private CourtRepository courtRepository;
 
-    public Court getById(Long id) {
-
-        return null;
+    public Court getById(Long id) throws CourtException {
+        return courtRepository.findById(id).orElseThrow(CourtException::new);
     }
 
     public Court create(Court court) {
         return courtRepository.save(court);
     }
 
-    public void deleteById(Long id) {
-
+    public void deleteById(Long id) throws CourtException {
+        Court court = getById(id);
+        courtRepository.delete(court);
     }
 
     public List<Court> findAll() {
-
-        return null;
+        List<Court> courts = courtRepository.findAll();
+        return courts;
     }
 }

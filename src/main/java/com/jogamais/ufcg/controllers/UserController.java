@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value="/users")
@@ -30,7 +29,6 @@ public class UserController implements IController {
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }
-
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
