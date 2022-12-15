@@ -1,7 +1,8 @@
 package com.jogamais.ufcg.services;
 
-import com.jogamais.ufcg.dto.UserDTO;
+import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,19 @@ public class UserService implements IService<User>{
 
         List<User> users = userRepository.findAll();
         return users;
+    }
+
+
+    public void editUser(Long id, UserEditDTO userEditDto) throws UserException, UserInvalidNumberException {
+        User user = getById(id);
+
+        user.setName(userEditDto.getName());
+        if (userEditDto.getPhoneNumber().length() != 11) {
+            throw new UserInvalidNumberException();
+        }
+        user.setPhoneNumber(userEditDto.getPhoneNumber());
+
+        create(user);
+
     }
 }

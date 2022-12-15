@@ -1,8 +1,10 @@
 package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.dto.UserDTO;
+import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.dto.UserResponseDTO;
 import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
 import com.jogamais.ufcg.utils.UserError;
@@ -56,5 +58,18 @@ public class UserController implements IController {
         User createdUser = userService.create(userDTO.getModel());
         UserResponseDTO response = new UserResponseDTO(createdUser);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+    @PatchMapping("{id}")
+    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserEditDTO userEditDto) throws UserException {
+        try {
+            userService.editUser(id, userEditDto);
+            return new ResponseEntity<>("Usuário editado com sucesso!", HttpStatus.OK);
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
+        } catch (UserInvalidNumberException e) {
+            return UserError.errorInvalidNumber();
+        }
     }
 }
