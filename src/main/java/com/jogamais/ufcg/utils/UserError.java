@@ -11,6 +11,7 @@ public class UserError {
 
     static final String INVALID_NUMBER = "Número inválido, tente novamente!";
 
+    static final String INVALID_INPUT = "Por favor, preencha com um nome válido!";
 
     public static ResponseEntity<CustomTypeError> errorUserNotExist() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.USER_NOT_EXIST),
@@ -26,4 +27,8 @@ public class UserError {
                 HttpStatus.BAD_REQUEST);
     }
 
+    public static ResponseEntity<CustomTypeError> errorInvalidInput() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.INVALID_INPUT),
+                HttpStatus.BAD_REQUEST);
+    }
 }

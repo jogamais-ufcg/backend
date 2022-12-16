@@ -2,6 +2,7 @@ package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.UserInvalidInputException;
 import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
@@ -36,8 +37,12 @@ public class UserService implements IService<User>{
     }
 
 
-    public void editUser(Long id, UserEditDTO userEditDto) throws UserException, UserInvalidNumberException {
+    public void editUser(Long id, UserEditDTO userEditDto) throws UserException, UserInvalidNumberException, UserInvalidInputException {
         User user = getById(id);
+
+        if (userEditDto.getName().isEmpty()) {
+            throw new UserInvalidInputException();
+        }
 
         user.setName(userEditDto.getName());
         if (userEditDto.getPhoneNumber().length() != 11) {

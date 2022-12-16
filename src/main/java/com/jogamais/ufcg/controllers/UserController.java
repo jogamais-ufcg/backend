@@ -4,6 +4,7 @@ import com.jogamais.ufcg.dto.UserDTO;
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.dto.UserResponseDTO;
 import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.UserInvalidInputException;
 import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
@@ -70,6 +71,8 @@ public class UserController implements IController {
             return UserError.errorUserNotExist();
         } catch (UserInvalidNumberException e) {
             return UserError.errorInvalidNumber();
+        } catch (UserInvalidInputException e) {
+            return UserError.errorInvalidInput();
         }
     }
 }
