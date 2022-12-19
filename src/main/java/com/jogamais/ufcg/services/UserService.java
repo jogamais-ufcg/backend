@@ -7,9 +7,9 @@ import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService implements IService<User>{
@@ -30,25 +30,27 @@ public class UserService implements IService<User>{
         userRepository.delete(user);
     }
 
-    public List<User> findAll() {
-
-        List<User> users = userRepository.findAll();
-        return users;
+    public Page<User> findAll(PageRequest page) {
+       return userRepository.findAll(PageRequest.of(page.getPageNumber(), 10));
     }
 
 
-    public void editUser(Long id, UserEditDTO userEditDto) throws UserException, UserInvalidNumberException, UserInvalidInputException {
+    public void editUser(Long id, UserEditDTO userEditDTO) throws UserException, UserInvalidNumberException, UserInvalidInputException {
         User user = getById(id);
 
-        if (userEditDto.getName().isEmpty()) {
-            throw new UserInvalidInputException();
+        if (userEditDTO.getName() != null) {
+            if (userEditDTO.getName().isEmpty()) {
+                throw new UserInvalidInputException();
+            }
+            user.setName(userEditDTO.getName());
         }
 
-        user.setName(userEditDto.getName());
-        if (userEditDto.getPhoneNumber().length() != 11) {
-            throw new UserInvalidNumberException();
+        if (userEditDTO.getPhoneNumber() != null) {
+            if (userEditDTO.getPhoneNumber().length() != 11) {
+                throw new UserInvalidNumberException();
+            }
+            user.setPhoneNumber(userEditDTO.getPhoneNumber());
         }
-        user.setPhoneNumber(userEditDto.getPhoneNumber());
 
         create(user);
 

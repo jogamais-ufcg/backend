@@ -1,9 +1,9 @@
 package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.exceptions.UserException;
-import com.jogamais.ufcg.models.User;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface IService<T> {
 
@@ -13,5 +13,5 @@ public interface IService<T> {
 
 	public abstract void deleteById(Long id) throws UserException;
 
-	public abstract List<T> findAll();
+	public abstract Page<T> findAll(PageRequest pageRequest);
 }
