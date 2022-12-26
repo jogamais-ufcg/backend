@@ -5,6 +5,7 @@ import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,5 +33,10 @@ public class UserService implements IService<User>{
 
         List<User> users = userRepository.findAll();
         return users;
+    }
+
+    @Override
+    public Page<User> search(String searchTerm, int page, int size) {
+        return null;
     }
 }
