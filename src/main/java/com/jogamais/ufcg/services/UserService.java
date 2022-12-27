@@ -17,23 +17,26 @@ public class UserService implements IService<User>{
     @Autowired
     private UserRepository userRepository;
 
+    @Override
     public User getById(Long id) throws UserException {
         return userRepository.findById(id).orElseThrow(UserException::new);
     }
 
+    @Override
     public User create(User user) {
         return userRepository.save(user);
     }
 
+    @Override
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
         userRepository.delete(user);
     }
 
+    @Override
     public Page<User> findAll(PageRequest page) {
        return userRepository.findAll(PageRequest.of(page.getPageNumber(), 10));
     }
-
 
     public void editUser(Long id, UserEditDTO userEditDTO) throws UserException, UserInvalidNumberException, UserInvalidInputException {
         User user = getById(id);
