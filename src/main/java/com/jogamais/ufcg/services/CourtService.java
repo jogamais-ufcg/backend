@@ -5,6 +5,7 @@ import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.repositories.CourtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,7 @@ public class CourtService implements IService<Court> {
 
     }
 
-    public List<Court> findAll() {
-
+    public Page<Court> findAll(PageRequest pageRequest) {
         return null;
     }
 

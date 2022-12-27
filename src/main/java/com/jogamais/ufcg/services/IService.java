@@ -12,7 +12,7 @@ public interface IService<T> {
 
     public abstract void deleteById(Long id) throws UserException;
 
-	  public abstract Page<T> findAll(PageRequest pageRequest);
+    public abstract Page<T> findAll(PageRequest pageRequest);
 
     public abstract Page<T> search(String searchTerm, int page, int size);
 

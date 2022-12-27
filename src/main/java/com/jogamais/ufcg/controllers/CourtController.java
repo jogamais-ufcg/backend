@@ -23,7 +23,7 @@ public class CourtController implements IController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<?> findAll(int page) {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
 
