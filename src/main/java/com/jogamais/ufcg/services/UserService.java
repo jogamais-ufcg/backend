@@ -17,7 +17,6 @@ public class UserService implements IService<User>{
     @Autowired
     private UserRepository userRepository;
 
-    @Override
     public User getById(Long id) throws UserException {
         return userRepository.findById(id).orElseThrow(UserException::new);
     }
