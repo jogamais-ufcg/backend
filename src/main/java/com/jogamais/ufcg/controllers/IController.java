@@ -14,5 +14,5 @@ public interface IController {
     ResponseEntity<?> deleteById(@PathVariable Long id);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    ResponseEntity<?> findAll();
+    ResponseEntity<?> findAll(int page);
 }
