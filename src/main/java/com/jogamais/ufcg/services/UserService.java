@@ -55,4 +55,9 @@ public class UserService implements IService<User>{
         create(user);
 
     }
+
+    @Override
+    public Page<User> search(String searchTerm, int page, int size) {
+        return null;
+    }
 }
