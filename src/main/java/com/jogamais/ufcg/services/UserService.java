@@ -26,7 +26,6 @@ public class UserService implements IService<User>{
         return userRepository.save(user);
     }
 
-    @Override
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
         userRepository.delete(user);

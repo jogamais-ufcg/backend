@@ -34,7 +34,6 @@ public class AdminAppointmentService implements IService<AdminAppointment> {
         return adminRepository.save(adminAppointment);
     }
 
-    @Override
     public void deleteById(Long id) throws AppointmentException {
         AdminAppointment adminAppointment = null; // getByID;
         adminRepository.delete(adminAppointment);

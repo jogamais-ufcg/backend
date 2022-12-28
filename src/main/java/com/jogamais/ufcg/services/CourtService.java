@@ -25,7 +25,6 @@ public class CourtService implements IService<Court> {
         return courtRepository.save(court);
     }
 
-    @Override
     public void deleteById(Long id) throws CourtException {
         Court court = getById(id);
         courtRepository.delete(court);

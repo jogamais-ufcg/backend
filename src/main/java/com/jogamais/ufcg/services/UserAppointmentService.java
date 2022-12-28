@@ -38,7 +38,6 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return userRepository.save(userAppointment);
     }
 
-    @Override
     public void deleteById(Long id) throws AppointmentException {
         UserAppointment userAppointment = this.getById(id);
         userRepository.delete(userAppointment);
