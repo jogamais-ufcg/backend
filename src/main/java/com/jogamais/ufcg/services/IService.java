@@ -2,12 +2,13 @@ package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.exceptions.CourtException;
 import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.UserMissingEnrollmentException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 public interface IService<T> {
 
-    public abstract T create(T entity) throws UserException;
+    public abstract T create(T entity) throws UserException, UserMissingEnrollmentException;
 
 	public abstract void deleteById(Long id) throws UserException, CourtException;
 
