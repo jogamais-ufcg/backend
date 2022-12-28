@@ -94,12 +94,14 @@ public class UserService implements IService<User>{
         User user = getById(id);
         user.setIsConfirmed(userConfirmationDTO.getIsConfirmed());
 
-        // TODO: Email dizendo se o cadastro foi aceito ou não.
-        // EmailService.sendConfirmationUser(user.getEmail(), user, fileFront);
-
         if (!userConfirmationDTO.getIsConfirmed()) {
             deleteById(id);
+        } else {
+            userRepository.save(user);
         }
+
+        // TODO: Email dizendo se o cadastro foi aceito ou não.
+        // EmailService.sendConfirmationUser(user.getEmail(), user);
 
     }
     @Override
