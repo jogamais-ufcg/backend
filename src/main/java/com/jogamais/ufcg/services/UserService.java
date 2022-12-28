@@ -1,13 +1,15 @@
 package com.jogamais.ufcg.services;
 
-import com.jogamais.ufcg.dto.UserDTO;
+import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.UserInvalidInputException;
+import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService implements IService<User>{
@@ -19,18 +21,45 @@ public class UserService implements IService<User>{
         return userRepository.findById(id).orElseThrow(UserException::new);
     }
 
+    @Override
     public User create(User user) {
         return userRepository.save(user);
     }
 
+    @Override
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
         userRepository.delete(user);
     }
 
-    public List<User> findAll() {
+    @Override
+    public Page<User> findAll(PageRequest page) {
+       return userRepository.findAll(PageRequest.of(page.getPageNumber(), 10));
+    }
 
-        List<User> users = userRepository.findAll();
-        return users;
+    public void editUser(Long id, UserEditDTO userEditDTO) throws UserException, UserInvalidNumberException, UserInvalidInputException {
+        User user = getById(id);
+
+        if (userEditDTO.getName() != null) {
+            if (userEditDTO.getName().isEmpty()) {
+                throw new UserInvalidInputException();
+            }
+            user.setName(userEditDTO.getName());
+        }
+
+        if (userEditDTO.getPhoneNumber() != null) {
+            if (userEditDTO.getPhoneNumber().length() != 11) {
+                throw new UserInvalidNumberException();
+            }
+            user.setPhoneNumber(userEditDTO.getPhoneNumber());
+        }
+
+        create(user);
+
+    }
+
+    @Override
+    public Page<User> search(String searchTerm, int page, int size) {
+        return null;
     }
 }

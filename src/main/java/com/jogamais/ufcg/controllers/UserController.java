@@ -1,17 +1,24 @@
 package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.dto.UserDTO;
+import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.dto.UserResponseDTO;
 import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.UserInvalidInputException;
+import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
 import com.jogamais.ufcg.utils.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value="/users")
@@ -42,11 +49,9 @@ public class UserController implements IController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> findAll() {
-        List<User> users = userService.findAll();
-        List<UserResponseDTO> response = users.stream().map(UserResponseDTO::new).toList();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<?> findAll(int page) {
+        Page users = userService.findAll(PageRequest.of(page, 10));
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping()
@@ -54,5 +59,19 @@ public class UserController implements IController {
         User createdUser = userService.create(userDTO.getModel());
         UserResponseDTO response = new UserResponseDTO(createdUser);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserEditDTO userEditDTO) throws UserException, IOException {
+        try {
+            userService.editUser(id, userEditDTO);
+            return new ResponseEntity<>("Usuário editado com sucesso!", HttpStatus.OK);
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
+        } catch (UserInvalidNumberException e) {
+            return UserError.errorInvalidNumber();
+        } catch (UserInvalidInputException e) {
+            return UserError.errorInvalidInput();
+        }
     }
 }

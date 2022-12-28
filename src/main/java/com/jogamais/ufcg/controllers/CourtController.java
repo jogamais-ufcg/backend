@@ -8,11 +8,11 @@ import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.services.CourtService;
 import com.jogamais.ufcg.utils.CourtError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value="/courts")
@@ -43,10 +43,9 @@ public class CourtController implements IController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> findAll() {
-        List<Court> courts = courtService.findAll();
-        List<CourtResponseDTO> response = courts.stream().map(CourtResponseDTO::new).toList();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<?> findAll(int page) {
+        Page courts = courtService.findAll(PageRequest.of(page, 5));
+        return new ResponseEntity<>(courts, HttpStatus.OK);
     }
 
     @PostMapping()
@@ -55,5 +54,7 @@ public class CourtController implements IController {
         CourtResponseDTO response = new CourtResponseDTO(createdCourt);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
 
 }

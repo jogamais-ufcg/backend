@@ -3,12 +3,6 @@ description: 'Build SpringBoot Project with maven'
 branding:
   icon: 'alert-circle'
   color: 'green'
-inputs:
-  ec2-ssh-key:
-    description: 'Key to connect with the ec2 instance'
-    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.ec2-ssh-key }}
