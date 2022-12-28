@@ -72,7 +72,7 @@ public class UserService implements IService<User>{
                 throw new UserMissingEnrollmentException();
             }
 
-            if (!giValidations.isOnlyDigits(user.getEnrollment())) {
+            if (!Validations.isOnlyDigits(user.getEnrollment())) {
                 throw new UserInvalidEnrollment();
             }
         } else {
@@ -85,7 +85,7 @@ public class UserService implements IService<User>{
             throw new UserInvalidCPF();
         }
 
-        if (Validations.isOnlyDigits(user.getPhoneNumber())) {
+        if (!Validations.isOnlyDigits(user.getPhoneNumber())) {
             throw new UserInvalidNumberException();
         }
     }
@@ -104,6 +104,7 @@ public class UserService implements IService<User>{
         // EmailService.sendConfirmationUser(user.getEmail(), user);
 
     }
+
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
         userRepository.delete(user);
