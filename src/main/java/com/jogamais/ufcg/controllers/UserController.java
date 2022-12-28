@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.io.IOException;
 
 @RestController
@@ -35,7 +36,6 @@ public class UserController implements IController {
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }
-
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -60,7 +60,6 @@ public class UserController implements IController {
         UserResponseDTO response = new UserResponseDTO(createdUser);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserEditDTO userEditDTO) throws UserException, IOException {
