@@ -61,7 +61,6 @@ public class UserAppointmentController implements IController{
         }
     }
 
-    @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteById(Long id) {
         try {

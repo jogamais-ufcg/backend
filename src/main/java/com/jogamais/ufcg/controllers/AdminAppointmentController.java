@@ -3,6 +3,7 @@ package com.jogamais.ufcg.controllers;
 import com.jogamais.ufcg.dto.AdminAppointmentDTO;
 import com.jogamais.ufcg.dto.AdminAppointmentResponseDTO;
 import com.jogamais.ufcg.exceptions.AppointmentException;
+import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
 import com.jogamais.ufcg.exceptions.CourtException;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.AdminAppointment;
@@ -56,17 +57,30 @@ public class AdminAppointmentController implements IController{
             return new ResponseEntity<>(new AdminAppointmentResponseDTO(adminAppointment), HttpStatus.OK);
         } catch (AppointmentException e) {
             return AppointmentError.errorAppointmentNotExist();
+        } catch (AppointmentUserOrCourtExcpetion e) {
+            return AppointmentError.errorAppointmentUserOrCourt();
         }
     }
 
-    @Override
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+    @RequestMapping(value = "/{idUser}/{idCourt}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws CourtException, UserException {
+        User user;
+        Court court;
         try {
-            adminService.deleteById(id);
-            return new ResponseEntity<>("Agendamento com ID: " + id + " removido com sucesso!", HttpStatus.OK);
+            user = userService.getById(idUser);
+            court = courtService.getById(idCourt);
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
+        } catch (CourtException e) {
+            return CourtError.errorCourtNotExist();
+        }
+        try {
+            adminService.deleteByUserAndCourt(user, court);
+            return new ResponseEntity<>("Agendamento removido com sucesso!", HttpStatus.OK);
         } catch(AppointmentException e) {
             return AppointmentError.errorAppointmentNotExist();
+        } catch (AppointmentUserOrCourtExcpetion e) {
+            return AppointmentError.errorAppointmentUserOrCourt();
         }
     }
 
