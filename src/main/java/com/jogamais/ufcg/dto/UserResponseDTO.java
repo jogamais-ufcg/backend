@@ -10,6 +10,7 @@ public class UserResponseDTO {
     private final String name;
     private final String cpf;
     private final String email;
+    private final String enrollment;
     private final String phoneNumber;
     private final Boolean isUFCGMember;
     private final Boolean isStudent;
@@ -19,6 +20,7 @@ public class UserResponseDTO {
         this.name = user.getName();
         this.cpf = user.getCpf();
         this.email = user.getEmail();
+        this.enrollment = user.getEnrollment();
         this.phoneNumber = user.getPhoneNumber();
         this.isUFCGMember = user.getIsUFCGMember();
         this.isStudent = user.getIsStudent();
