@@ -4,8 +4,15 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+
 @Getter
 public class UserConfirmationDTO {
     private Boolean isConfirmed;
+
+    public UserConfirmationDTO() {
+    }
+    public UserConfirmationDTO(Boolean isConfirmed) {
+        this.isConfirmed = isConfirmed;
+    }
 }
+
