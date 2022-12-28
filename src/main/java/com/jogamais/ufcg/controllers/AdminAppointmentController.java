@@ -108,8 +108,9 @@ public class AdminAppointmentController implements IController{
         }
 
         AppointmentPK appointmentPK = adminService.createAppointmentPk(user, court);
-        AdminAppointment createdAdminAppointment = adminService.create(adminAppointmentDTO.getModel());
+        AdminAppointment createdAdminAppointment = adminAppointmentDTO.getModel();
         createdAdminAppointment.setId(appointmentPK);
+        adminService.create(createdAdminAppointment);
 
         AdminAppointmentResponseDTO response = new AdminAppointmentResponseDTO(createdAdminAppointment);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
