@@ -72,7 +72,7 @@ public class UserService implements IService<User>{
                 throw new UserMissingEnrollmentException();
             }
 
-            if (Validations.isOnlyDigits(user.getEnrollment())) {
+            if (!Validations.isOnlyDigits(user.getEnrollment())) {
                 throw new UserInvalidEnrollment();
             }
         } else {
@@ -85,7 +85,7 @@ public class UserService implements IService<User>{
             throw new UserInvalidCPF();
         }
 
-        if (Validations.isOnlyDigits(user.getPhoneNumber())) {
+        if (!Validations.isOnlyDigits(user.getPhoneNumber())) {
             throw new UserInvalidNumberException();
         }
     }
