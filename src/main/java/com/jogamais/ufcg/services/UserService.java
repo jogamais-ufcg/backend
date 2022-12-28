@@ -1,5 +1,6 @@
 package com.jogamais.ufcg.services;
 
+import com.jogamais.ufcg.dto.UserConfirmationDTO;
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.User;
@@ -89,6 +90,18 @@ public class UserService implements IService<User>{
         }
     }
 
+    public void userConfirmation(Long id, UserConfirmationDTO userConfirmationDTO) throws UserException {
+        User user = getById(id);
+        user.setIsConfirmed(userConfirmationDTO.getIsConfirmed());
+
+        // TODO: Email dizendo se o cadastro foi aceito ou não.
+        // EmailService.sendConfirmationUser(user.getEmail(), user, fileFront);
+
+        if (!userConfirmationDTO.getIsConfirmed()) {
+            deleteById(id);
+        }
+
+    }
     @Override
     public void deleteById(Long id) throws UserException {
         User user = getById(id);

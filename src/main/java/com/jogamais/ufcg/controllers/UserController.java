@@ -1,5 +1,6 @@
 package com.jogamais.ufcg.controllers;
 
+import com.jogamais.ufcg.dto.UserConfirmationDTO;
 import com.jogamais.ufcg.dto.UserCreateDTO;
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.dto.UserResponseDTO;
@@ -90,6 +91,16 @@ public class UserController implements IController {
             return UserError.errorInvalidNumber();
         } catch (UserInvalidInputException e) {
             return UserError.errorInvalidInput();
+        }
+    }
+
+    @PutMapping("/{id}/confirmations")
+    public ResponseEntity<?> userConfirmation(@PathVariable Long id, @RequestBody UserConfirmationDTO userConfirmationDTO) {
+        try {
+            userService.userConfirmation(id, userConfirmationDTO);
+            return new ResponseEntity<>("Email de resposta ao cadastro foi enviado ao usuário!", HttpStatus.OK);
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
         }
     }
 }
