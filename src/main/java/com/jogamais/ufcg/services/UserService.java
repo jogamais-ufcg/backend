@@ -8,6 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,8 @@ import java.util.Optional;
 @Service
 public class UserService implements IService<User>{
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserRepository userRepository;
 
@@ -29,15 +32,17 @@ public class UserService implements IService<User>{
     }
 
     public User createWithFiles(User user, MultipartFile fileFront, MultipartFile fileBack) throws UserException, UserMissingEnrollmentException, UserMissingFileBack {
-        Optional<User> foundUser = userRepository.findById(user.getId());
-        if (foundUser.isPresent()) {
-            throw new UserException();
-        }
+//        Optional<User> foundUser = userRepository.findById(user.getId());
+//        if (foundUser.isPresent()) {
+//            throw new UserException();
+//        }
 
         validateUserCreationFields(user, fileBack);
 
         // EmailService.sendRequestEmail("adminufcg@gmail.com", user, fileFront, fileBack);
-
+        
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return create(user);
     }
 
