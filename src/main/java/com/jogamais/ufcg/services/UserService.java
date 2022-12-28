@@ -4,15 +4,13 @@ import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
-import org.mindrot.jbcrypt.BCrypt;
+import com.jogamais.ufcg.utils.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 @Service
 public class UserService implements IService<User>{
@@ -31,30 +29,63 @@ public class UserService implements IService<User>{
         return userRepository.save(user);
     }
 
-    public User createWithFiles(User user, MultipartFile fileFront, MultipartFile fileBack) throws UserException, UserMissingEnrollmentException, UserMissingFileBack {
-//        Optional<User> foundUser = userRepository.findById(user.getId());
-//        if (foundUser.isPresent()) {
-//            throw new UserException();
-//        }
-
+    public User createWithFiles(User user, MultipartFile fileFront, MultipartFile fileBack) throws UserException, UserMissingEnrollmentException, UserMissingFileBack, UserInvalidCPF, UserInvalidEnrollment, UserInvalidNumberException {
+        verifyIfUserExists(user);
         validateUserCreationFields(user, fileBack);
 
-        // EmailService.sendRequestEmail("adminufcg@gmail.com", user, fileFront, fileBack);
+        if (user.getIsStudent()) {
+            user.setIsUFCGMember(true);
+        }
+
+        // TODO: Passo 5
+        // EmailService.sendAccountCreationRequestEmail("adminufcg@gmail.com", user, fileFront, fileBack);
         
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+
         return create(user);
     }
 
-    private void validateUserCreationFields(User user, MultipartFile fileBack) throws UserMissingEnrollmentException, UserMissingFileBack {
+    private void verifyIfUserExists(User user) throws UserException {
+        User foundUser = userRepository.findByEmail(user.getEmail());
+        if (foundUser != null) {
+            throw new UserException();
+        }
+
+        foundUser = userRepository.findByCpf(user.getCpf());
+        if (foundUser != null) {
+            throw new UserException();
+        }
+
+        if (user.getIsStudent()) {
+            foundUser = userRepository.findByEnrollment(user.getEnrollment());
+            if (foundUser != null) {
+                throw new UserException();
+            }
+        }
+    }
+
+    private void validateUserCreationFields(User user, MultipartFile fileBack) throws UserMissingEnrollmentException, UserMissingFileBack, UserInvalidEnrollment, UserInvalidCPF, UserInvalidNumberException {
         if (user.getIsStudent()) {
             if (user.getEnrollment() == null) {
                 throw new UserMissingEnrollmentException();
+            }
+
+            if (Validations.isOnlyDigits(user.getEnrollment())) {
+                throw new UserInvalidEnrollment();
             }
         } else {
             if (fileBack == null) {
                 throw new UserMissingFileBack();
             }
+        }
+
+        if (!Validations.isCPF(user.getCpf())) {
+            throw new UserInvalidCPF();
+        }
+
+        if (Validations.isOnlyDigits(user.getPhoneNumber())) {
+            throw new UserInvalidNumberException();
         }
     }
 

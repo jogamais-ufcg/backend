@@ -5,6 +5,7 @@ import com.jogamais.ufcg.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    //User findUser(User user);
+    User findByEmail(String email);
+    User findByCpf(String cpf);
+    User findByEnrollment(String enrollment);
 }

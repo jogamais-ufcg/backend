@@ -67,6 +67,12 @@ public class UserController implements IController {
             return UserError.errorMissingEnrollment();
         } catch (UserMissingFileBack e) {
             return UserError.errorMissingFileBack();
+        } catch (UserInvalidCPF e) {
+            return UserError.errorInvalidCPF();
+        } catch (UserInvalidNumberException e) {
+            return UserError.errorInvalidNumber();
+        } catch (UserInvalidEnrollment e) {
+            return UserError.errorInvalidEnrollment();
         }
 
         UserResponseDTO response = new UserResponseDTO(createdUser);
