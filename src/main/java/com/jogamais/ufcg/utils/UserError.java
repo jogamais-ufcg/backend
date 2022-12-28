@@ -13,6 +13,10 @@ public class UserError {
 
     static final String INVALID_INPUT = "Por favor, preencha com um nome válido!";
 
+    static final String MISSING_ENROLLMENT = "Um aluno da UFCG precisa possuir uma matrícula!";
+
+    static final String MISSING_FILE_BACK = "O verso do documento é obrigatório!";
+
     public static ResponseEntity<CustomTypeError> errorUserNotExist() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.USER_NOT_EXIST),
                 HttpStatus.NOT_FOUND);
@@ -29,6 +33,16 @@ public class UserError {
 
     public static ResponseEntity<CustomTypeError> errorInvalidInput() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.INVALID_INPUT),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    public static ResponseEntity<CustomTypeError> errorMissingEnrollment() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.MISSING_ENROLLMENT),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    public static ResponseEntity<CustomTypeError> errorMissingFileBack() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.MISSING_FILE_BACK),
                 HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,15 +1,17 @@
 package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.dto.UserEditDTO;
-import com.jogamais.ufcg.exceptions.UserException;
-import com.jogamais.ufcg.exceptions.UserInvalidInputException;
-import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
+import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 public class UserService implements IService<User>{
@@ -24,6 +26,31 @@ public class UserService implements IService<User>{
     @Override
     public User create(User user) {
         return userRepository.save(user);
+    }
+
+    public User createWithFiles(User user, MultipartFile fileFront, MultipartFile fileBack) throws UserException, UserMissingEnrollmentException, UserMissingFileBack {
+        Optional<User> foundUser = userRepository.findById(user.getId());
+        if (foundUser.isPresent()) {
+            throw new UserException();
+        }
+
+        validateUserCreationFields(user, fileBack);
+
+        // EmailService.sendRequestEmail("adminufcg@gmail.com", user, fileFront, fileBack);
+
+        return create(user);
+    }
+
+    private void validateUserCreationFields(User user, MultipartFile fileBack) throws UserMissingEnrollmentException, UserMissingFileBack {
+        if (user.getIsStudent()) {
+            if (user.getEnrollment() == null) {
+                throw new UserMissingEnrollmentException();
+            }
+        } else {
+            if (fileBack == null) {
+                throw new UserMissingFileBack();
+            }
+        }
     }
 
     @Override
@@ -55,7 +82,6 @@ public class UserService implements IService<User>{
         }
 
         create(user);
-
     }
 
     @Override

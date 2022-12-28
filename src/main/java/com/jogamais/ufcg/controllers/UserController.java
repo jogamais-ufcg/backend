@@ -1,11 +1,9 @@
 package com.jogamais.ufcg.controllers;
 
-import com.jogamais.ufcg.dto.UserDTO;
+import com.jogamais.ufcg.dto.UserCreateDTO;
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.dto.UserResponseDTO;
-import com.jogamais.ufcg.exceptions.UserException;
-import com.jogamais.ufcg.exceptions.UserInvalidInputException;
-import com.jogamais.ufcg.exceptions.UserInvalidNumberException;
+import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
 import com.jogamais.ufcg.utils.UserError;
@@ -57,15 +55,23 @@ public class UserController implements IController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> create(@RequestPart String name, @RequestPart String cpf, @RequestPart String email, @RequestPart String phoneNumber, @RequestPart String password, @RequestPart String isUFCGMember, @RequestPart String isStudent, @RequestPart MultipartFile fileFront, @RequestPart MultipartFile fileBack) {
-        UserDTO userDTO = new UserDTO(name, cpf, email, phoneNumber, password, isUFCGMember.equals("true"), isStudent.equals("true"));
+    public ResponseEntity<?> create(@RequestPart String name, @RequestPart String cpf, @RequestPart String email, @RequestPart(required = false) String enrollment, @RequestPart String phoneNumber, @RequestPart String password, @RequestPart String isUFCGMember, @RequestPart String isStudent, @RequestPart MultipartFile fileFront, @RequestPart(required = false) MultipartFile fileBack) {
+        UserCreateDTO userDTO = new UserCreateDTO(name, cpf, enrollment, email, phoneNumber, password, isUFCGMember.equals("true"), isStudent.equals("true"));
 
-        User createdUser = userService.create(userDTO.getModel());
+        User createdUser;
+        try {
+            createdUser = userService.createWithFiles(userDTO.getModel(), fileFront, fileBack);
+        } catch (UserException e) {
+            return UserError.errorUserAlreadyExist(userDTO.getCpf());
+        } catch (UserMissingEnrollmentException e) {
+            return UserError.errorMissingEnrollment();
+        } catch (UserMissingFileBack e) {
+            return UserError.errorMissingFileBack();
+        }
 
         UserResponseDTO response = new UserResponseDTO(createdUser);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserEditDTO userEditDTO) throws UserException, IOException {

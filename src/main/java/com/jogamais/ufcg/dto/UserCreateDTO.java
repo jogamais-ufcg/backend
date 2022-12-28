@@ -10,9 +10,11 @@ import java.util.Date;
 
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
-public class UserDTO {
+public class UserCreateDTO {
     private String name;
     private String cpf;
+
+    private String enrollment;
     private String email;
     private String phoneNumber;
     private String password;
@@ -29,6 +31,7 @@ public class UserDTO {
                 this.name,
                 this.cpf,
                 this.email,
+                this.enrollment,
                 this.phoneNumber,
                 this.password,
                 this.isUFCGMember,

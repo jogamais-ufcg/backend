@@ -1,5 +1,6 @@
 package com.jogamais.ufcg.configs;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
