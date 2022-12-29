@@ -1,9 +1,6 @@
 package com.jogamais.ufcg.controllers;
 
-import com.jogamais.ufcg.dto.UserConfirmationDTO;
-import com.jogamais.ufcg.dto.UserCreateDTO;
-import com.jogamais.ufcg.dto.UserEditDTO;
-import com.jogamais.ufcg.dto.UserResponseDTO;
+import com.jogamais.ufcg.dto.*;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
@@ -51,8 +48,9 @@ public class UserController implements IController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll(int page) {
-        Page<User> users = userService.findAll(PageRequest.of(page, 10));
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        Page<User> usersList = userService.findAll(PageRequest.of(page, 10));
+        List<UserResponseDTO> response = usersList.stream().map(UserResponseDTO::new).toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
