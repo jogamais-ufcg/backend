@@ -11,15 +11,21 @@ import com.jogamais.ufcg.utils.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
 @Transactional
-public class UserService implements IService<User>{
+public class UserService implements IService<User>, UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -160,5 +166,19 @@ public class UserService implements IService<User>{
     @Override
     public Page<User> search(String searchTerm, int page, int size) {
         return null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("Usuário não encontrado!");
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getPermissions().forEach(permission -> {
+            authorities.add(new SimpleGrantedAuthority(permission.getDescription()));
+        });
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 }

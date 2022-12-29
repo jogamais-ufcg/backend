@@ -85,7 +85,7 @@ public class UserController implements IController {
         return new ResponseEntity<>("Permissão criada com sucesso!", HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/permission/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/permission/addPermission", method = RequestMethod.POST)
     public ResponseEntity<?> addPermissionToUser(@RequestParam Long userId, @RequestParam Long permissionId) {
         try {
             User user = userService.getById(userId);
