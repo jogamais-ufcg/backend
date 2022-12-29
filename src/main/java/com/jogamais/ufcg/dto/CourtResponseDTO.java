@@ -11,13 +11,13 @@ public class CourtResponseDTO {
     private final String name;
     private final String photo;
     private final String description;
-//    private final CourtRules courtRules;
+    private final CourtRules courtRules;
 
 
     public CourtResponseDTO(Court court) {
         this.name = court.getName();
         this.photo = court.getPhoto();
         this.description = court.getDescription();
-//        this.courtRules = court.getCourtRules();
+        this.courtRules = court.getCourtRules();
     }
 }

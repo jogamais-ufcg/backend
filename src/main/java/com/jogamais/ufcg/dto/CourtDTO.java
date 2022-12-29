@@ -12,15 +12,15 @@ public class CourtDTO {
         private String name;
         private String photo;
         private String description;
-//        private CourtRules courtRules;
+        private CourtRules courtRules;
 
         public Court getModel() {
             return new Court(
                     null,
                     this.name,
                     this.photo,
-                    this.description
-//                    this.courtRules
+                    this.description,
+                    this.courtRules
             );
         }
 }

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/appointments/admin")
+@RequestMapping(value="/appointments/admins")
 @CrossOrigin
 public class AdminAppointmentController implements IController{
 
@@ -40,7 +40,7 @@ public class AdminAppointmentController implements IController{
     private CourtService courtService;
 
 
-    @RequestMapping(value = "/{idUser}/{idCourt}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{idUser}/courts/{idCourt}", method = RequestMethod.GET)
     public ResponseEntity<?> findByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws UserException, CourtException {
         User user;
         Court court;
@@ -62,7 +62,7 @@ public class AdminAppointmentController implements IController{
         }
     }
 
-    @RequestMapping(value = "/{idUser}/{idCourt}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{idUser}/courts/{idCourt}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws CourtException, UserException {
         User user;
         Court court;
