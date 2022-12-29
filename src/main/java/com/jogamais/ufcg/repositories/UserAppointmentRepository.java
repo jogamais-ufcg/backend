@@ -11,5 +11,5 @@ import java.util.Optional;
 
 public interface UserAppointmentRepository extends JpaRepository<UserAppointment, AppointmentPK> {
 
-    Optional<AdminAppointment> findById_UserAndId_Court(User user, Court court);
+    Optional<UserAppointment> findById_UserAndId_Court(User user, Court court);
 }

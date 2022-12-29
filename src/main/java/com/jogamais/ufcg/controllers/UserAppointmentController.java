@@ -1,13 +1,11 @@
 package com.jogamais.ufcg.controllers;
 
-import com.jogamais.ufcg.dto.AdminAppointmentDTO;
-import com.jogamais.ufcg.dto.AdminAppointmentResponseDTO;
 import com.jogamais.ufcg.dto.UserAppointmentDTO;
 import com.jogamais.ufcg.dto.UserAppointmentResponseDTO;
 import com.jogamais.ufcg.exceptions.AppointmentException;
+import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
 import com.jogamais.ufcg.exceptions.CourtException;
 import com.jogamais.ufcg.exceptions.UserException;
-import com.jogamais.ufcg.models.AdminAppointment;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
@@ -54,20 +52,34 @@ public class UserAppointmentController implements IController{
             return CourtError.errorCourtNotExist();
         }
         try {
-            AdminAppointment adminAppointment = userAppointmentService.findByUserAndCourt(user, court);
-            return new ResponseEntity<>(new AdminAppointmentResponseDTO(adminAppointment), HttpStatus.OK);
+            UserAppointment userAppointment = userAppointmentService.findByUserAndCourt(user, court);
+            return new ResponseEntity<>(new UserAppointmentResponseDTO(userAppointment), HttpStatus.OK);
         } catch (AppointmentException e) {
             return AppointmentError.errorAppointmentNotExist();
+        } catch (AppointmentUserOrCourtExcpetion e) {
+            return AppointmentError.errorAppointmentUserOrCourt();
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteById(Long id) {
+    @RequestMapping(value = "/{idUser}/{idCourt}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws CourtException, UserException {
+        User user;
+        Court court;
         try {
-            userAppointmentService.deleteById(id);
-            return new ResponseEntity<>("Agendamento com ID: " + id + " removido com sucesso!", HttpStatus.OK);
+            user = userService.getById(idUser);
+            court = courtService.getById(idCourt);
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
+        } catch (CourtException e) {
+            return CourtError.errorCourtNotExist();
+        }
+        try {
+            userAppointmentService.deleteByUserAndCourt(user, court);
+            return new ResponseEntity<>("Agendamento removido com sucesso!", HttpStatus.OK);
         } catch(AppointmentException e) {
             return AppointmentError.errorAppointmentNotExist();
+        } catch (AppointmentUserOrCourtExcpetion e) {
+            return AppointmentError.errorAppointmentUserOrCourt();
         }
     }
 
@@ -94,8 +106,10 @@ public class UserAppointmentController implements IController{
         }
 
         AppointmentPK appointmentPK = userAppointmentService.createAppointmentPk(user, court);
-        UserAppointment createdUserAppointment = userAppointmentService.create(userAppointmentDTO.getModel());
+        UserAppointment createdUserAppointment = userAppointmentDTO.getModel();
         createdUserAppointment.setId(appointmentPK);
+        userAppointmentService.create(createdUserAppointment);
+
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

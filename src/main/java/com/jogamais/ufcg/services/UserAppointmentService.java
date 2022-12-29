@@ -1,6 +1,7 @@
 package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.exceptions.AppointmentException;
+import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
 import com.jogamais.ufcg.models.AdminAppointment;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
@@ -20,17 +21,12 @@ public class UserAppointmentService implements IService<UserAppointment> {
     @Autowired
     private UserAppointmentRepository userRepository;
 
-    public AdminAppointment findByUserAndCourt(User user, Court court) throws AppointmentException {
+    public UserAppointment findByUserAndCourt(User user, Court court) throws AppointmentException, AppointmentUserOrCourtExcpetion {
         if (user == null || court == null) {
-            throw new AppointmentException();
+            throw new AppointmentUserOrCourtExcpetion();
         }
 
         return userRepository.findById_UserAndId_Court(user, court).orElseThrow(AppointmentException::new);
-    }
-
-    public UserAppointment getById(Long id) throws AppointmentException {
-        return null;
-//        return userRepository.findById(id).orElseThrow(AppointmentException::new);
     }
 
     @Override
@@ -38,8 +34,8 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return userRepository.save(userAppointment);
     }
 
-    public void deleteById(Long id) throws AppointmentException {
-        UserAppointment userAppointment = this.getById(id);
+    public void deleteByUserAndCourt(User user, Court court) throws AppointmentException, AppointmentUserOrCourtExcpetion {
+        UserAppointment userAppointment = findByUserAndCourt(user, court);
         userRepository.delete(userAppointment);
     }
 
