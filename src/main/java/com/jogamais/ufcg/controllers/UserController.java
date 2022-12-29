@@ -2,6 +2,7 @@ package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.dto.*;
 import com.jogamais.ufcg.exceptions.*;
+import com.jogamais.ufcg.models.Permission;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
 import com.jogamais.ufcg.utils.UserError;
@@ -76,6 +77,29 @@ public class UserController implements IController {
 
         UserResponseDTO response = new UserResponseDTO(createdUser);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/permission/create", method = RequestMethod.POST)
+    public ResponseEntity<?> createPermission(@RequestBody Permission permission) {
+        userService.createPermission(permission);
+        return new ResponseEntity<>("Permissão criada com sucesso!", HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/permission/create", method = RequestMethod.POST)
+    public ResponseEntity<?> addPermissionToUser(@RequestParam Long userId, @RequestParam Long permissionId) {
+        try {
+            User user = userService.getById(userId);
+            Permission permission = userService.getPermissionById(permissionId);
+            userService.addPermissionToUser(user.getEmail(), permission.getDescription());
+            return new ResponseEntity<>(
+                    "Permissão " + permission.getDescription() + "adicionada ao Usuário com ID: " + user.getId() + " com sucesso!"
+                    , HttpStatus.OK
+            );
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
+        } catch (PermissionException e) {
+            return UserError.errorInvalidInput();
+        }
     }
 
     @PatchMapping(value = "/{id}")

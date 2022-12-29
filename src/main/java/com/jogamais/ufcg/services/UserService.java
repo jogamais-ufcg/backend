@@ -3,7 +3,9 @@ package com.jogamais.ufcg.services;
 import com.jogamais.ufcg.dto.UserConfirmationDTO;
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.*;
+import com.jogamais.ufcg.models.Permission;
 import com.jogamais.ufcg.models.User;
+import com.jogamais.ufcg.repositories.PermissionRepository;
 import com.jogamais.ufcg.repositories.UserRepository;
 import com.jogamais.ufcg.utils.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+
 @Service
-public class UserService implements UserDetailsService, IService<User>{
+@Transactional
+public class UserService implements IService<User>{
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PermissionRepository permissionRepository;
 
     public User getById(Long id) throws UserException {
         return userRepository.findById(id).orElseThrow(UserException::new);
@@ -28,6 +36,20 @@ public class UserService implements UserDetailsService, IService<User>{
     @Override
     public User create(User user) {
         return userRepository.save(user);
+    }
+
+    public Permission createPermission(Permission permission) {
+        return permissionRepository.save(permission);
+    }
+
+    public Permission getPermissionById(Long permissionId) throws PermissionException {
+        return permissionRepository.findById(permissionId).orElseThrow(PermissionException::new);
+    }
+
+    public void addPermissionToUser(String email, String permissionName) {
+        User user = userRepository.findByEmail(email);
+        Permission permission = permissionRepository.findByDescription(permissionName);
+        user.getPermissions().add(permission);
     }
 
     public User createWithFiles(User user, MultipartFile fileFront, MultipartFile fileBack) throws UserException, UserMissingEnrollmentException, UserMissingFileBack, UserInvalidCPF, UserInvalidEnrollment, UserInvalidNumberException {
@@ -138,16 +160,5 @@ public class UserService implements UserDetailsService, IService<User>{
     @Override
     public Page<User> search(String searchTerm, int page, int size) {
         return null;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        var user = userRepository.findByUsername(username);
-        if (user != null) {
-            return user;
-        } else {
-            throw new UsernameNotFoundException("Username " + username + " not found!");
-        }
     }
 }

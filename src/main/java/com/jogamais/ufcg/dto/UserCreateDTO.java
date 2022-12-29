@@ -13,13 +13,13 @@ import java.util.Date;
 @Getter
 public class UserCreateDTO {
     private String name;
-    private String username;
-    private String password;
     private String cpf;
 
     private String enrollment;
     private String email;
     private String phoneNumber;
+
+    private String password;
     private Boolean isUFCGMember;
     private Boolean isStudent;
 
@@ -30,18 +30,13 @@ public class UserCreateDTO {
 
         return new User(
                 null,
-                this.username,
-                this.password,
-                false,
-                false,
-                false,
-                false,
-                new ArrayList<>(),
                 this.name,
                 this.cpf,
                 this.email,
                 this.enrollment,
                 this.phoneNumber,
+                this.password,
+                new ArrayList<>(),
                 this.isUFCGMember,
                 this.isStudent,
                 false,

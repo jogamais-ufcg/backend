@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "PERMISSION")
-public class Permission implements GrantedAuthority, Serializable {
+public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,9 +23,4 @@ public class Permission implements GrantedAuthority, Serializable {
     private Long id;
     @Column(nullable = false, length = 180)
     private String description;
-
-    @Override
-    public String getAuthority() {
-        return this.description;
-    }
 }
