@@ -6,22 +6,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
-public class UserDTO {
+public class UserCreateDTO {
     private String name;
     private String username;
     private String password;
     private String cpf;
+
+    private String enrollment;
     private String email;
     private String phoneNumber;
     private Boolean isUFCGMember;
     private Boolean isStudent;
-    private Date validUntil;
 
     public User getModel() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 1);
+        Date validUntil = calendar.getTime();
+
         return new User(
                 null,
                 this.username,
@@ -34,11 +40,12 @@ public class UserDTO {
                 this.name,
                 this.cpf,
                 this.email,
+                this.enrollment,
                 this.phoneNumber,
                 this.isUFCGMember,
                 this.isStudent,
                 false,
-                this.validUntil,
+                validUntil,
                 false,
                 false
         );

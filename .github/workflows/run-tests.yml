@@ -1,0 +1,15 @@
+name: run-tests
+
+on:
+  pull_request:
+    types: ['opened', 'synchronize']
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run project tests
+        uses: ./.github/actions/mvn-run-tests

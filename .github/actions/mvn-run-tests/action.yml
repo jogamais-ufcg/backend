@@ -1,5 +1,5 @@
-name: 'mvn-build'
-description: 'Build SpringBoot Project with maven'
+name: 'mvn-run-tests'
+description: 'Run SpringBoot Project tests with maven'
 branding:
   icon: 'alert-circle'
   color: 'green'
