@@ -101,7 +101,7 @@ public class UserControllerTest {
         mvc.perform(get("/users?page=0")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content.length()").value(2))
                 .andExpect(jsonPath("$.content[0].cpf").value("22406543846"))
                 .andExpect(jsonPath("$.content[1].cpf").value("65626099840"));
     }
