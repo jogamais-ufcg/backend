@@ -1,6 +1,7 @@
 package com.jogamais.ufcg.controllers;
 
 
+import com.jogamais.ufcg.dto.AdminAppointmentResponseDTO;
 import com.jogamais.ufcg.dto.CourtDTO;
 import com.jogamais.ufcg.dto.CourtResponseDTO;
 import com.jogamais.ufcg.exceptions.CourtException;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/courts")
@@ -44,8 +47,10 @@ public class CourtController implements IController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll(int page) {
-        Page courts = courtService.findAll(PageRequest.of(page, 5));
-        return new ResponseEntity<>(courts, HttpStatus.OK);
+        Page<Court> courtsList = courtService.findAll(PageRequest.of(page, 5));
+        List<CourtResponseDTO> response = courtsList.stream().map(CourtResponseDTO::new).toList();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping()
