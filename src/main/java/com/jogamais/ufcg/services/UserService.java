@@ -104,7 +104,7 @@ public class UserService implements IService<User>{
         // EmailService.sendConfirmationUser(user.getEmail(), user);
 
     }
-    @Override
+
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
         userRepository.delete(user);
