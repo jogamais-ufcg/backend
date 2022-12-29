@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Getter
 public class UserResponseDTO {
+    private final Long id;
     private final String name;
     private final String cpf;
     private final String email;
@@ -17,6 +18,7 @@ public class UserResponseDTO {
     private final Date validUntil;
 
     public UserResponseDTO(User user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.cpf = user.getCpf();
         this.email = user.getEmail();

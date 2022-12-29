@@ -115,7 +115,7 @@ public class UserService implements IService<User>{
        return userRepository.findAll(PageRequest.of(page.getPageNumber(), 10));
     }
 
-    public void editUser(Long id, UserEditDTO userEditDTO) throws UserException, UserInvalidNumberException, UserInvalidInputException {
+    public User editUser(Long id, UserEditDTO userEditDTO) throws UserException, UserInvalidNumberException, UserInvalidInputException {
         User user = getById(id);
 
         if (userEditDTO.getName() != null) {
@@ -132,7 +132,7 @@ public class UserService implements IService<User>{
             user.setPhoneNumber(userEditDTO.getPhoneNumber());
         }
 
-        create(user);
+        return create(user);
     }
 
     @Override

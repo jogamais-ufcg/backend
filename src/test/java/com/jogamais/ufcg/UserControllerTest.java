@@ -156,4 +156,19 @@ public class UserControllerTest {
         assert response.getString("cpf").equals(cpf);
         assert response.getString("email").equals(email);
     }
+
+    @Test
+    void updateUserPhoneNumber() throws Exception {
+        JSONObject userJSON = createStudent("Davi Sousa", "22406543846", "davi@email.com", "123456789");
+
+        String updatedPhoneNumber = "11911223344";
+        JSONObject body = new JSONObject();
+        body.put("phoneNumber", updatedPhoneNumber);
+
+        mvc.perform(patch("/users/{id}", userJSON.getLong("id"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body.toString()))
+                .andExpect(jsonPath("$.id").value(userJSON.getLong("id")))
+                .andExpect(jsonPath("$.phoneNumber").value(updatedPhoneNumber));
+    }
 }

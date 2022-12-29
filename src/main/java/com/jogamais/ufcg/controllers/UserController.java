@@ -83,8 +83,8 @@ public class UserController implements IController {
     @PatchMapping(value = "/{id}")
     public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserEditDTO userEditDTO) throws UserException, IOException {
         try {
-            userService.editUser(id, userEditDTO);
-            return new ResponseEntity<>("Usuário editado com sucesso!", HttpStatus.OK);
+            User editedUser = userService.editUser(id, userEditDTO);
+            return new ResponseEntity<>(new UserResponseDTO(editedUser), HttpStatus.OK);
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         } catch (UserInvalidNumberException e) {
