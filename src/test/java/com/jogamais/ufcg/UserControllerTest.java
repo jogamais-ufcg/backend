@@ -2,12 +2,10 @@ package com.jogamais.ufcg;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.NullString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,7 +24,8 @@ public class UserControllerTest {
     private MockMvc mvc;
 
     private JSONObject createStudent(String name, String cpf, String email, String enrollment) throws Exception {
-        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
+        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE,
+                "SomeBytesToFile".getBytes());
 
         MockPart namePart = new MockPart("name", name.getBytes());
         MockPart cpfPart = new MockPart("cpf", cpf.getBytes());
@@ -38,9 +37,9 @@ public class UserControllerTest {
         MockPart isUFCGMember = new MockPart("isUFCGMember", "true".getBytes());
 
         MvcResult result = mvc.perform(multipart("/users")
-                        .file(fileFront)
-                        .part(namePart, cpfPart, emailPart, enrollmentPart, phoneNumber, password, isStudent, isUFCGMember)
-                        .accept(MediaType.APPLICATION_JSON))
+                .file(fileFront)
+                .part(namePart, cpfPart, emailPart, enrollmentPart, phoneNumber, password, isStudent, isUFCGMember)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -48,8 +47,10 @@ public class UserControllerTest {
     }
 
     private JSONObject createInternalUFCGMember(String name, String cpf, String email) throws Exception {
-        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
-        MockMultipartFile fileBack = new MockMultipartFile("fileBack", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
+        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE,
+                "SomeBytesToFile".getBytes());
+        MockMultipartFile fileBack = new MockMultipartFile("fileBack", "file.pdf", MediaType.APPLICATION_PDF_VALUE,
+                "SomeBytesToFile".getBytes());
 
         MockPart namePart = new MockPart("name", name.getBytes());
         MockPart cpfPart = new MockPart("cpf", cpf.getBytes());
@@ -60,10 +61,10 @@ public class UserControllerTest {
         MockPart isUFCGMember = new MockPart("isUFCGMember", "true".getBytes());
 
         MvcResult result = mvc.perform(multipart("/users")
-                        .file(fileFront)
-                        .file(fileBack)
-                        .part(namePart, cpfPart, emailPart, phoneNumber, password, isStudent, isUFCGMember)
-                        .accept(MediaType.APPLICATION_JSON))
+                .file(fileFront)
+                .file(fileBack)
+                .part(namePart, cpfPart, emailPart, phoneNumber, password, isStudent, isUFCGMember)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -99,7 +100,7 @@ public class UserControllerTest {
         createStudent("Henrique Silva", "65626099840", "henrique@email.com", "987654321");
 
         mvc.perform(get("/users?page=0")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].cpf").value("22406543846"))
@@ -108,7 +109,8 @@ public class UserControllerTest {
 
     @Test
     void shouldNotCreateStudentWithoutEnrollment() throws Exception {
-        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
+        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE,
+                "SomeBytesToFile".getBytes());
 
         MockPart namePart = new MockPart("name", "Davi Sousa".getBytes());
         MockPart cpfPart = new MockPart("cpf", "22406543846".getBytes());
@@ -119,15 +121,16 @@ public class UserControllerTest {
         MockPart isUFCGMember = new MockPart("isUFCGMember", "true".getBytes());
 
         mvc.perform(multipart("/users")
-                        .file(fileFront)
-                        .part(namePart, cpfPart, emailPart, phoneNumber, password, isStudent, isUFCGMember)
-                        .accept(MediaType.APPLICATION_JSON))
+                .file(fileFront)
+                .part(namePart, cpfPart, emailPart, phoneNumber, password, isStudent, isUFCGMember)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorMessage").value("Um aluno da UFCG precisa possuir uma matrícula!"));
     }
 
     @Test
     void shouldNotCreateNonStudentWithoutFileBack() throws Exception {
-        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
+        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE,
+                "SomeBytesToFile".getBytes());
 
         MockPart namePart = new MockPart("name", "Davi Sousa".getBytes());
         MockPart cpfPart = new MockPart("cpf", "22406543846".getBytes());
@@ -138,9 +141,9 @@ public class UserControllerTest {
         MockPart isUFCGMember = new MockPart("isUFCGMember", "false".getBytes());
 
         mvc.perform(multipart("/users")
-                        .file(fileFront)
-                        .part(namePart, cpfPart, emailPart, phoneNumber, password, isStudent, isUFCGMember)
-                        .accept(MediaType.APPLICATION_JSON))
+                .file(fileFront)
+                .part(namePart, cpfPart, emailPart, phoneNumber, password, isStudent, isUFCGMember)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorMessage").value("O verso do documento é obrigatório!"));
     }
 

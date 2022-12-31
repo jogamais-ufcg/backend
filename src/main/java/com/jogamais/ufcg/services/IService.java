@@ -1,7 +1,5 @@
 package com.jogamais.ufcg.services;
 
-import com.jogamais.ufcg.exceptions.AppointmentException;
-import com.jogamais.ufcg.exceptions.CourtException;
 import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.exceptions.UserMissingEnrollmentException;
 import org.springframework.data.domain.Page;

@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/appointments/users")
+@RequestMapping(value = "/appointments/users")
 @CrossOrigin
-public class UserAppointmentController implements IController{
+public class UserAppointmentController implements IController {
 
     @Autowired
     private UserAppointmentService userAppointmentService;
@@ -40,7 +40,8 @@ public class UserAppointmentController implements IController{
     private CourtService courtService;
 
     @RequestMapping(value = "/{idUser}/courts/{idCourt}", method = RequestMethod.GET)
-    public ResponseEntity<?> findByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws UserException, CourtException {
+    public ResponseEntity<?> findByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt)
+            throws UserException, CourtException {
         User user;
         Court court;
         try {
@@ -62,7 +63,8 @@ public class UserAppointmentController implements IController{
     }
 
     @RequestMapping(value = "/{idUser}/courts/{idCourt}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws CourtException, UserException {
+    public ResponseEntity<?> deleteByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt)
+            throws CourtException, UserException {
         User user;
         Court court;
         try {
@@ -76,7 +78,7 @@ public class UserAppointmentController implements IController{
         try {
             userAppointmentService.deleteByUserAndCourt(user, court);
             return new ResponseEntity<>("Agendamento removido com sucesso!", HttpStatus.OK);
-        } catch(AppointmentException e) {
+        } catch (AppointmentException e) {
             return AppointmentError.errorAppointmentNotExist();
         } catch (AppointmentUserOrCourtExcpetion e) {
             return AppointmentError.errorAppointmentUserOrCourt();
@@ -87,13 +89,15 @@ public class UserAppointmentController implements IController{
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll(int page) {
         Page<UserAppointment> userAppointmentList = userAppointmentService.findAll(PageRequest.of(page, 10));
-        List<UserAppointmentResponseDTO> response = userAppointmentList.stream().map(UserAppointmentResponseDTO::new).toList();
+        List<UserAppointmentResponseDTO> response = userAppointmentList.stream().map(UserAppointmentResponseDTO::new)
+                .toList();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam Long idUser, @RequestParam Long idCourt) throws UserException, CourtException {
+    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam Long idUser,
+            @RequestParam Long idCourt) throws UserException, CourtException {
         User user;
         Court court;
         try {

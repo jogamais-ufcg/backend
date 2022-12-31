@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppointmentPK  implements Serializable {
+public class AppointmentPK implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @OneToOne

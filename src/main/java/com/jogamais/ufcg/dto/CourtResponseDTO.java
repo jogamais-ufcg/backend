@@ -2,10 +2,8 @@ package com.jogamais.ufcg.dto;
 
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.CourtRules;
-import com.jogamais.ufcg.models.User;
 import lombok.Getter;
 
-import java.util.Date;
 @Getter
 public class CourtResponseDTO {
     private final String name;

@@ -1,7 +1,6 @@
 package com.jogamais.ufcg.controllers;
 
 
-import com.jogamais.ufcg.dto.AdminAppointmentResponseDTO;
 import com.jogamais.ufcg.dto.CourtDTO;
 import com.jogamais.ufcg.dto.CourtResponseDTO;
 import com.jogamais.ufcg.exceptions.CourtException;

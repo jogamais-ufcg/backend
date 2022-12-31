@@ -15,14 +15,11 @@ public class CourtDTO {
         private CourtRules courtRules;
 
         public Court getModel() {
-            return new Court(
-                    null,
-                    this.name,
-                    this.photo,
-                    this.description,
-                    this.courtRules
-            );
+                return new Court(
+                                null,
+                                this.name,
+                                this.photo,
+                                this.description,
+                                this.courtRules);
         }
 }
-
-
