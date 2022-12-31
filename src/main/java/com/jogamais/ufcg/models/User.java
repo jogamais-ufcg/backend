@@ -41,8 +41,8 @@ public class User {
     @Column(name = "IS_STUDENT", nullable = false)
     private Boolean isStudent;
 
-    @Column(name = "IS_ADMIN")
-    private Boolean isAdmin = false;
+    @Column(name = "IS_ADMIN", nullable = false)
+    private Boolean isAdmin;
 
     @Column(name = "VALID_UNTIL", nullable = false)
     private Date validUntil;
