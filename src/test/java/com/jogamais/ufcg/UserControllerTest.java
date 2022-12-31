@@ -214,6 +214,8 @@ public class UserControllerTest {
     }
 
     @Test
+=======
+>>>>>>> parent of 318e065 (feat: add shouldNotCreateStudentWithInvalidNumberDigits test)
     void shouldNotCreateStudentWithoutEnrollment() throws Exception {
         MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
 
