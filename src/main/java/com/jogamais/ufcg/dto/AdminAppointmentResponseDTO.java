@@ -22,5 +22,4 @@ public class AdminAppointmentResponseDTO {
         this.playerList = adminAppointment.getPlayerList();
     }
 
-
 }

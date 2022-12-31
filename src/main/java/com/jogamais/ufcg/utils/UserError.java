@@ -25,7 +25,8 @@ public class UserError {
     }
 
     public static ResponseEntity<CustomTypeError> errorUserAlreadyExist(String cpf) {
-        return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.USER_ALREADY_EXIST), HttpStatus.CONFLICT);
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.USER_ALREADY_EXIST),
+                HttpStatus.CONFLICT);
     }
 
     public static ResponseEntity<CustomTypeError> errorInvalidNumber() {

@@ -1,7 +1,5 @@
 package com.jogamais.ufcg.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 

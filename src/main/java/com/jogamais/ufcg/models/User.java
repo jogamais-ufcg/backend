@@ -5,53 +5,52 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="USER")
+@Table(name = "USER")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="NAME", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name="CPF", nullable = false)
+    @Column(name = "CPF", nullable = false)
     private String cpf;
 
-    @Column(name="EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name="ENROLLMENT")
+    @Column(name = "ENROLLMENT")
     private String enrollment;
 
-    @Column(name="PHONE_NUMBER", nullable = false)
+    @Column(name = "PHONE_NUMBER", nullable = false)
     private String phoneNumber;
 
-    @Column(name="PASSWORD", nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name="IS_UFCG_MEMBER", nullable = false)
+    @Column(name = "IS_UFCG_MEMBER", nullable = false)
     private Boolean isUFCGMember;
 
-    @Column(name="IS_STUDENT", nullable = false)
+    @Column(name = "IS_STUDENT", nullable = false)
     private Boolean isStudent;
 
-    @Column(name="IS_ADMIN")
-    private Boolean isAdmin = false;
+    @Column(name = "IS_ADMIN", nullable = false)
+    private Boolean isAdmin;
 
-    @Column(name="VALID_UNTIL", nullable = false)
+    @Column(name = "VALID_UNTIL", nullable = false)
     private Date validUntil;
 
-    @Column(name="CONFIRMED", nullable = false)
+    @Column(name = "CONFIRMED", nullable = false)
     private Boolean isConfirmed;
 
-    @Column(name="BLOCKED", nullable = false)
+    @Column(name = "BLOCKED", nullable = false)
     private Boolean isBlocked;
 
 }

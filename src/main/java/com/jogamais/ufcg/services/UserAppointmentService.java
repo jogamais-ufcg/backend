@@ -2,7 +2,6 @@ package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.exceptions.AppointmentException;
 import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
-import com.jogamais.ufcg.models.AdminAppointment;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
@@ -13,15 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserAppointmentService implements IService<UserAppointment> {
 
     @Autowired
     private UserAppointmentRepository userRepository;
 
-    public UserAppointment findByUserAndCourt(User user, Court court) throws AppointmentException, AppointmentUserOrCourtExcpetion {
+    public UserAppointment findByUserAndCourt(User user, Court court)
+            throws AppointmentException, AppointmentUserOrCourtExcpetion {
         if (user == null || court == null) {
             throw new AppointmentUserOrCourtExcpetion();
         }
@@ -34,7 +32,8 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return userRepository.save(userAppointment);
     }
 
-    public void deleteByUserAndCourt(User user, Court court) throws AppointmentException, AppointmentUserOrCourtExcpetion {
+    public void deleteByUserAndCourt(User user, Court court)
+            throws AppointmentException, AppointmentUserOrCourtExcpetion {
         UserAppointment userAppointment = findByUserAndCourt(user, court);
         userRepository.delete(userAppointment);
     }
