@@ -107,26 +107,6 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldNotCreateStudentWithInvalidNumberDigits() throws Exception {
-        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
-
-        MockPart namePart = new MockPart("name", "Davi Sousa".getBytes());
-        MockPart cpfPart = new MockPart("cpf", "22406543846".getBytes());
-        MockPart emailPart = new MockPart("email", "davi@email.com".getBytes());
-        MockPart enrollmentPart = new MockPart("enrollment", "123".getBytes());
-        MockPart phoneNumber = new MockPart("phoneNumber", "numero".getBytes());
-        MockPart password = new MockPart("password", "minhasenha".getBytes());
-        MockPart isStudent = new MockPart("isStudent", "true".getBytes());
-        MockPart isUFCGMember = new MockPart("isUFCGMember", "true".getBytes());
-
-        mvc.perform(multipart("/users")
-                        .file(fileFront)
-                        .part(namePart, cpfPart, emailPart, enrollmentPart, phoneNumber, password, isStudent, isUFCGMember)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errorMessage").value("Número inválido, tente novamente!"));
-    }
-
-    @Test
     void shouldNotCreateStudentWithInvalidEnrollmentDigits() throws Exception {
         MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
 
@@ -144,6 +124,27 @@ public class UserControllerTest {
                         .part(namePart, cpfPart, emailPart, enrollmentPart, phoneNumber, password, isStudent, isUFCGMember)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorMessage").value("O número de matrícula informado é inválido!"));
+    }
+
+    @Test
+    void shouldNotCreateStudentWithInvalidNumberDigits() throws Exception {
+        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
+
+        MockPart namePart = new MockPart("name", "Davi Sousa".getBytes());
+        MockPart cpfPart = new MockPart("cpf", "22406543846".getBytes());
+        MockPart emailPart = new MockPart("email", "davi@email.com".getBytes());
+        MockPart enrollmentPart = new MockPart("enrollment", "123".getBytes());
+        MockPart phoneNumber = new MockPart("phoneNumber", "numero".getBytes());
+        MockPart password = new MockPart("password", "minhasenha".getBytes());
+        MockPart isStudent = new MockPart("isStudent", "true".getBytes());
+        MockPart isUFCGMember = new MockPart("isUFCGMember", "true".getBytes());
+
+        mvc.perform(multipart("/users")
+                        .file(fileFront)
+                        .part(namePart, cpfPart, emailPart, enrollmentPart, phoneNumber, password, isStudent, isUFCGMember)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorMessage").value("Número inválido, tente novamente!"));
+
     }
 
     @Test
