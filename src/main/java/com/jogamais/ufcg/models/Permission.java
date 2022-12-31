@@ -21,6 +21,6 @@ public class Permission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 180)
+    @Column(nullable = false)
     private String description;
 }

@@ -7,7 +7,7 @@ import com.jogamais.ufcg.models.Permission;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.PermissionRepository;
 import com.jogamais.ufcg.repositories.UserRepository;
-import com.jogamais.ufcg.utils.Validations;
+import com.jogamais.ufcg.utils.errors.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,8 +39,18 @@ public class UserService implements IService<User>, UserDetailsService {
         return userRepository.findById(id).orElseThrow(UserException::new);
     }
 
+    public User getByEmail(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("Usuário não encontrado!");
+        }
+        return user;
+    }
+
     @Override
     public User create(User user) {
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
