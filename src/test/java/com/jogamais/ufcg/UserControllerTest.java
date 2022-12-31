@@ -147,6 +147,28 @@ public class UserControllerTest {
     }
 
     @Test
+    void shouldNotCreateStudentWithEmailAlreadyRegistered() throws Exception {
+        createStudent("Davi Sousa", "22406543846", "davi@email.com", "123456789");
+
+        MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
+
+        MockPart namePart = new MockPart("name", "Davi Sousa".getBytes());
+        MockPart cpfPart = new MockPart("cpf", "06522078473".getBytes());
+        MockPart emailPart = new MockPart("email", "davi@email.com".getBytes());
+        MockPart enrollmentPart = new MockPart("enrollment", "1234".getBytes());
+        MockPart phoneNumber = new MockPart("phoneNumber", "83940028922".getBytes());
+        MockPart password = new MockPart("password", "123".getBytes());
+        MockPart isStudent = new MockPart("isStudent", "true".getBytes());
+        MockPart isUFCGMember = new MockPart("isUFCGMember", "true".getBytes());
+
+        mvc.perform(multipart("/users")
+                        .file(fileFront)
+                        .part(namePart, cpfPart, emailPart, enrollmentPart, phoneNumber, password, isStudent, isUFCGMember)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorMessage").value("Esse usuário já está cadastrado, verifique o seu email, cpf ou matrícula"));
+    }
+
+    @Test
     void shouldNotCreateStudentWithoutEnrollment() throws Exception {
         MockMultipartFile fileFront = new MockMultipartFile("fileFront", "file.pdf", MediaType.APPLICATION_PDF_VALUE, "SomeBytesToFile".getBytes());
 
