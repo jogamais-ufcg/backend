@@ -17,7 +17,6 @@ public class UserAppointmentDTO {
         return new UserAppointment(
                 null,
                 this.appointmentDate,
-                this.playerList
-        );
+                this.playerList);
     }
 }

@@ -67,8 +67,12 @@ public class UserController implements IController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> create(@RequestPart String name, @RequestPart String cpf, @RequestPart String email, @RequestPart(required = false) String enrollment, @RequestPart String phoneNumber, @RequestPart String password, @RequestPart String isUFCGMember, @RequestPart String isStudent, @RequestPart MultipartFile fileFront, @RequestPart(required = false) MultipartFile fileBack) {
-        UserCreateDTO userDTO = new UserCreateDTO(name, cpf, enrollment, email, phoneNumber, password, isUFCGMember.equals("true"), isStudent.equals("true"));
+    public ResponseEntity<?> create(@RequestPart String name, @RequestPart String cpf, @RequestPart String email,
+            @RequestPart(required = false) String enrollment, @RequestPart String phoneNumber,
+            @RequestPart String password, @RequestPart String isUFCGMember, @RequestPart String isStudent,
+            @RequestPart MultipartFile fileFront, @RequestPart(required = false) MultipartFile fileBack) {
+        UserCreateDTO userDTO = new UserCreateDTO(name, cpf, enrollment, email, phoneNumber, password,
+                isUFCGMember.equals("true"), isStudent.equals("true"));
 
         User createdUser;
         try {
@@ -150,7 +154,8 @@ public class UserController implements IController {
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserEditDTO userEditDTO) throws UserException, IOException {
+    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserEditDTO userEditDTO)
+            throws UserException, IOException {
         try {
             User editedUser = userService.editUser(id, userEditDTO);
             return new ResponseEntity<>(new UserResponseDTO(editedUser), HttpStatus.OK);
@@ -164,7 +169,8 @@ public class UserController implements IController {
     }
 
     @PutMapping("/{id}/confirmations")
-    public ResponseEntity<?> userConfirmation(@PathVariable Long id, @RequestBody UserConfirmationDTO userConfirmationDTO) {
+    public ResponseEntity<?> userConfirmation(@PathVariable Long id,
+            @RequestBody UserConfirmationDTO userConfirmationDTO) {
         try {
             userService.userConfirmation(id, userConfirmationDTO);
             return new ResponseEntity<>("Email de resposta ao cadastro foi enviado ao usuário!", HttpStatus.OK);

@@ -42,8 +42,6 @@ public class UserCreateDTO {
                 false,
                 validUntil,
                 false,
-                false
-        );
+                false);
     }
 }
-

@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/appointments/admins")
+@RequestMapping(value = "/appointments/admins")
 @CrossOrigin
-public class AdminAppointmentController implements IController{
+public class AdminAppointmentController implements IController {
 
     @Autowired
     private AdminAppointmentService adminService;
@@ -39,9 +39,9 @@ public class AdminAppointmentController implements IController{
     @Autowired
     private CourtService courtService;
 
-
     @RequestMapping(value = "/{idUser}/courts/{idCourt}", method = RequestMethod.GET)
-    public ResponseEntity<?> findByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws UserException, CourtException {
+    public ResponseEntity<?> findByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt)
+            throws UserException, CourtException {
         User user;
         Court court;
         try {
@@ -63,7 +63,8 @@ public class AdminAppointmentController implements IController{
     }
 
     @RequestMapping(value = "/{idUser}/courts/{idCourt}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt) throws CourtException, UserException {
+    public ResponseEntity<?> deleteByUserAndCourt(@PathVariable Long idUser, @PathVariable Long idCourt)
+            throws CourtException, UserException {
         User user;
         Court court;
         try {
@@ -77,25 +78,26 @@ public class AdminAppointmentController implements IController{
         try {
             adminService.deleteByUserAndCourt(user, court);
             return new ResponseEntity<>("Agendamento removido com sucesso!", HttpStatus.OK);
-        } catch(AppointmentException e) {
+        } catch (AppointmentException e) {
             return AppointmentError.errorAppointmentNotExist();
         } catch (AppointmentUserOrCourtExcpetion e) {
             return AppointmentError.errorAppointmentUserOrCourt();
         }
     }
 
-
     @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll(int page) {
         Page<AdminAppointment> adminAppointmentList = adminService.findAll(PageRequest.of(page, 10));
-        List<AdminAppointmentResponseDTO> response = adminAppointmentList.stream().map(AdminAppointmentResponseDTO::new).toList();
+        List<AdminAppointmentResponseDTO> response = adminAppointmentList.stream().map(AdminAppointmentResponseDTO::new)
+                .toList();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody AdminAppointmentDTO adminAppointmentDTO, @RequestParam Long idUser, @RequestParam Long idCourt) throws UserException, CourtException {
+    public ResponseEntity<?> create(@RequestBody AdminAppointmentDTO adminAppointmentDTO, @RequestParam Long idUser,
+            @RequestParam Long idCourt) throws UserException, CourtException {
         User user;
         Court court;
         try {

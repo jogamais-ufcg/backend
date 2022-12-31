@@ -1,6 +1,5 @@
 package com.jogamais.ufcg.repositories;
 
-import com.jogamais.ufcg.models.AdminAppointment;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;

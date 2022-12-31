@@ -6,6 +6,7 @@ import com.jogamais.ufcg.models.pk.AppointmentPK;
 import lombok.*;
 
 import javax.persistence.*;
+
 @Data
 @Builder
 @NoArgsConstructor

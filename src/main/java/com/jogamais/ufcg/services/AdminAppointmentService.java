@@ -12,16 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-
 @Service
 public class AdminAppointmentService implements IService<AdminAppointment> {
 
     @Autowired
     private AdminAppointmentRepository adminRepository;
 
-    public AdminAppointment findByUserAndCourt(User user, Court court) throws AppointmentException, AppointmentUserOrCourtExcpetion {
+    public AdminAppointment findByUserAndCourt(User user, Court court)
+            throws AppointmentException, AppointmentUserOrCourtExcpetion {
         if (user == null || court == null) {
             throw new AppointmentUserOrCourtExcpetion();
         }
@@ -29,13 +27,13 @@ public class AdminAppointmentService implements IService<AdminAppointment> {
         return adminRepository.findById_UserAndId_Court(user, court).orElseThrow(AppointmentException::new);
     }
 
-
     @Override
     public AdminAppointment create(AdminAppointment adminAppointment) {
         return adminRepository.save(adminAppointment);
     }
 
-    public void deleteByUserAndCourt(User user, Court court) throws AppointmentException, AppointmentUserOrCourtExcpetion {
+    public void deleteByUserAndCourt(User user, Court court)
+            throws AppointmentException, AppointmentUserOrCourtExcpetion {
         AdminAppointment adminAppointment = findByUserAndCourt(user, court);
         adminRepository.delete(adminAppointment);
 
@@ -48,7 +46,8 @@ public class AdminAppointmentService implements IService<AdminAppointment> {
 
     @Override
     public Page<AdminAppointment> findAll(PageRequest page) {
-        Page<AdminAppointment> adminAppointmentsList = adminRepository.findAll(PageRequest.of(page.getPageNumber(), 10));
+        Page<AdminAppointment> adminAppointmentsList = adminRepository
+                .findAll(PageRequest.of(page.getPageNumber(), 10));
 
         return adminAppointmentsList;
     }

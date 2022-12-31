@@ -23,7 +23,6 @@ public class AdminAppointmentDTO {
                 this.userEmail,
                 this.userPhone,
                 this.appointmentDate,
-                this.playerList
-        );
+                this.playerList);
     }
 }
