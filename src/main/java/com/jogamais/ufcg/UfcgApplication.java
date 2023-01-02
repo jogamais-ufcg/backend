@@ -24,19 +24,4 @@ public class UfcgApplication {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	@Bean
-	CommandLineRunner run(UserService userService) {
-		return args -> {
-			userService.createPermission(new Permission(null, "USER"));
-			userService.createPermission(new Permission(null, "ADMIN"));
-			userService.createPermission(new Permission(null, "SUPER_ADMIN"));
-			userService.createPermission(new Permission(null, "MANAGER"));
-
-			userService.create(new User(null, "Eduardo", "19602262079", "eduardogb@gmail.com", "120110905", "88992255497", "12345", new ArrayList<>(), true, true, false, new Date(), true, false));
-
-			userService.addPermissionToUser("eduardogb@gmail.com", "ADMIN");
-
-		};
-	}
-
 }
