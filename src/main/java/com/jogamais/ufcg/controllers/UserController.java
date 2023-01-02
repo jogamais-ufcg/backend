@@ -10,6 +10,7 @@ import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Permission;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.UserService;
+import com.jogamais.ufcg.utils.errors.PermissionError;
 import com.jogamais.ufcg.utils.errors.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -97,7 +99,11 @@ public class UserController implements IController {
 
     @RequestMapping(value = "/permission", method = RequestMethod.POST)
     public ResponseEntity<?> createPermission(@RequestBody Permission permission) {
-        userService.createPermission(permission);
+        try {
+            userService.createPermission(permission);
+        } catch (PermissionException e) {
+            return PermissionError.errorPermissionAlreadyExist();
+        }
         return new ResponseEntity<>("Permissão criada com sucesso!", HttpStatus.CREATED);
     }
 
@@ -114,7 +120,7 @@ public class UserController implements IController {
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         } catch (PermissionException e) {
-            return UserError.errorInvalidInput();
+            return PermissionError.errorPermissionNotExist();
         }
     }
 

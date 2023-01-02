@@ -1,4 +1,4 @@
-package com.jogamais.ufcg.utils.errors;
+package com.jogamais.ufcg.utils;
 
 import java.util.InputMismatchException;
 

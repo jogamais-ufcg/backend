@@ -7,7 +7,7 @@ import com.jogamais.ufcg.models.Permission;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.PermissionRepository;
 import com.jogamais.ufcg.repositories.UserRepository;
-import com.jogamais.ufcg.utils.errors.Validations;
+import com.jogamais.ufcg.utils.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +54,11 @@ public class UserService implements IService<User>, UserDetailsService {
         return userRepository.save(user);
     }
 
-    public Permission createPermission(Permission permission) {
+    public Permission createPermission(Permission permission) throws PermissionException {
+        if (permissionRepository.findByDescription(permission.getDescription().toUpperCase()) != null) {
+            throw new PermissionException();
+        }
+        permission.setDescription(permission.getDescription().toUpperCase());
         return permissionRepository.save(permission);
     }
 
@@ -62,9 +66,19 @@ public class UserService implements IService<User>, UserDetailsService {
         return permissionRepository.findById(permissionId).orElseThrow(PermissionException::new);
     }
 
-    public void addPermissionToUser(String email, String permissionName) {
+    public void addPermissionToUser(String email, String permissionName) throws UserException, PermissionException {
         User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("Usuário não encontrado!");
+        }
+
+
         Permission permission = permissionRepository.findByDescription(permissionName);
+        if (permission == null) {
+            throw new PermissionException();
+        }
+
+
         user.getPermissions().add(permission);
     }
 
