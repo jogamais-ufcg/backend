@@ -4,12 +4,14 @@ import com.jogamais.ufcg.models.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Calendar;
 import java.util.Date;
 
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
+@Setter
 public class UserCreateDTO {
     private String name;
     private String cpf;
