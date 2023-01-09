@@ -12,6 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class UserAppointmentService implements IService<UserAppointment> {
 
@@ -48,6 +53,43 @@ public class UserAppointmentService implements IService<UserAppointment> {
         Page<UserAppointment> userAppointmentList = userRepository.findAll(PageRequest.of(page.getPageNumber(), 10));
 
         return userAppointmentList;
+    }
+
+    public List<Date> listAvailableTimes(List<UserAppointment> appointments) {
+        Calendar calendar = Calendar.getInstance();
+
+        List<Date> availableTimes = new ArrayList<>();
+        for (UserAppointment appointment : appointments) {
+            Date startDate = appointment.getStartAppointmentDate();
+            Date endDate = appointment.getEndAppointmentDate();
+            calendar.setTime(startDate);
+
+            long durationInMilliseconds = endDate.getTime() - startDate.getTime();
+            int durationInHours = (int) (durationInMilliseconds / (1000 * 60 * 60));
+
+            while (calendar.getTime().before(endDate)) {
+                Date startTime = calendar.getTime();
+                calendar.add(Calendar.HOUR_OF_DAY, durationInHours);
+                Date endTime = calendar.getTime();
+
+                boolean isAvailable = true;
+                for (UserAppointment a : appointments) {
+                    if (a.getId().equals(appointment.getId())) {
+                        continue;
+                    }
+                    if (!(endTime.before(a.getStartAppointmentDate()) || startTime.after(a.getEndAppointmentDate()))) {
+                        isAvailable = false;
+                        break;
+                    }
+                }
+
+                if (isAvailable) {
+                    availableTimes.add(startTime);
+                }
+            }
+        }
+
+        return availableTimes;
     }
 
     public AppointmentPK createAppointmentPk(User user, Court court) {

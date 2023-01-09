@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -96,7 +97,7 @@ public class UserAppointmentController implements IController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam Long idUser,
+    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam int durationInHours, @RequestParam Long idUser,
             @RequestParam Long idCourt) throws UserException, CourtException {
         User user;
         Court court;
@@ -111,10 +112,24 @@ public class UserAppointmentController implements IController {
 
         AppointmentPK appointmentPK = userAppointmentService.createAppointmentPk(user, court);
         UserAppointment createdUserAppointment = userAppointmentDTO.getModel();
+        createdUserAppointment.setAppointmentInterval(userAppointmentDTO.getStartAppointmentDate(), durationInHours);
         createdUserAppointment.setId(appointmentPK);
         userAppointmentService.create(createdUserAppointment);
 
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+//    @RequestMapping(value = "/courts/{idCourt}/available-times", method = RequestMethod.GET)
+//    public ResponseEntity<?> getAvailableTimes(@RequestParam("date") Date date, @PathVariable Long idCourt)
+//            throws CourtException {
+//        Court court;
+//        try {
+//            court = courtService.getById(idCourt);
+//        } catch (CourtException e) {
+//            return CourtError.errorCourtNotExist();
+//        }
+//        List<Date> availableTimes = userAppointmentService.findAvailableTimesByDate(date, court);
+//        return new ResponseEntity<>(availableTimes,HttpStatus.OK);
+//    }
 }
