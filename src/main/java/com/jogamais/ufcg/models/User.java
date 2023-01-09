@@ -3,6 +3,9 @@ package com.jogamais.ufcg.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @Data
@@ -35,6 +38,9 @@ public class User {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Permission> permissions = new ArrayList<>();
+
     @Column(name = "IS_UFCG_MEMBER", nullable = false)
     private Boolean isUFCGMember;
 
@@ -52,5 +58,4 @@ public class User {
 
     @Column(name = "BLOCKED", nullable = false)
     private Boolean isBlocked;
-
 }
