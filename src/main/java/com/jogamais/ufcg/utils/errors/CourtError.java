@@ -1,4 +1,4 @@
-package com.jogamais.ufcg.utils;
+package com.jogamais.ufcg.utils.errors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
