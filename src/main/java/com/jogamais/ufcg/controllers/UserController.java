@@ -108,7 +108,7 @@ public class UserController implements IController {
         }
     }
 
-    @RequestMapping(value = "/{id}/blockedUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/blockedUser", method = RequestMethod.PATCH)
     public ResponseEntity<?> blockedUser(@PathVariable Long id) {
         try {
             userService.blockedUser(id);
