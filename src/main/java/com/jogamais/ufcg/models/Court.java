@@ -18,7 +18,7 @@ public class Court {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCourt;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
     @Column(name = "PHOTO", nullable = false)
