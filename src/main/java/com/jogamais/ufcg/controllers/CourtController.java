@@ -57,10 +57,9 @@ public class CourtController implements IController {
 
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody CourtDTO courtDTO) {
+        Court createdCourt;
         try {
-            Court createdCourt = courtService.createCourtValidatingFields(courtDTO.getModel());
-            CourtResponseDTO response = new CourtResponseDTO(createdCourt);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+            createdCourt = courtService.createCourtValidatingFields(courtDTO.getModel());
         } catch (CourtException e) {
             return CourtError.errorCourtAlreadyExist();
         } catch (CourtInvalidOpeningHours e) {
@@ -70,6 +69,9 @@ public class CourtController implements IController {
         } catch (CourtInvalidAppointmentDuration e) {
             return CourtError.errorCourtInvalidAppointmentDuration();
         }
+
+        CourtResponseDTO response = new CourtResponseDTO(createdCourt);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
