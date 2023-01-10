@@ -4,6 +4,9 @@ package com.jogamais.ufcg.controllers;
 import com.jogamais.ufcg.dto.CourtDTO;
 import com.jogamais.ufcg.dto.CourtResponseDTO;
 import com.jogamais.ufcg.exceptions.CourtException;
+import com.jogamais.ufcg.exceptions.CourtInvalidAppointmentDuration;
+import com.jogamais.ufcg.exceptions.CourtInvalidOpeningHours;
+import com.jogamais.ufcg.exceptions.CourtInvalidRecurrenceIntervalPeriod;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.services.CourtService;
 import com.jogamais.ufcg.utils.CourtError;
@@ -54,9 +57,19 @@ public class CourtController implements IController {
 
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody CourtDTO courtDTO) {
-        Court createdCourt = courtService.create(courtDTO.getModel());
-        CourtResponseDTO response = new CourtResponseDTO(createdCourt);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        try {
+            Court createdCourt = courtService.createCourtValidatingFields(courtDTO.getModel());
+            CourtResponseDTO response = new CourtResponseDTO(createdCourt);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (CourtException e) {
+            return CourtError.errorCourtAlreadyExist();
+        } catch (CourtInvalidOpeningHours e) {
+            return CourtError.errorCourtInvalidOpeningHours();
+        } catch (CourtInvalidRecurrenceIntervalPeriod e) {
+            return CourtError.errorCourtInvalidRecurrenceIntervalPeriod();
+        } catch (CourtInvalidAppointmentDuration e) {
+            return CourtError.errorCourtInvalidAppointmentDuration();
+        }
     }
 
 

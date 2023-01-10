@@ -1,7 +1,11 @@
 package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.exceptions.CourtException;
+import com.jogamais.ufcg.exceptions.CourtInvalidAppointmentDuration;
+import com.jogamais.ufcg.exceptions.CourtInvalidOpeningHours;
+import com.jogamais.ufcg.exceptions.CourtInvalidRecurrenceIntervalPeriod;
 import com.jogamais.ufcg.models.Court;
+import com.jogamais.ufcg.models.CourtRules;
 import com.jogamais.ufcg.repositories.CourtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,8 +24,30 @@ public class CourtService implements IService<Court> {
     }
 
     @Override
-    public Court create(Court court) {
-        return courtRepository.save(court);
+    public Court create(Court court) { return courtRepository.save(court); }
+
+    public Court createCourtValidatingFields(Court court) throws CourtException, CourtInvalidOpeningHours, CourtInvalidAppointmentDuration, CourtInvalidRecurrenceIntervalPeriod {
+        Court foundCourt = courtRepository.findByName(court.getName());
+        if (foundCourt != null) {
+            throw new CourtException();
+        }
+        validateCourtRulesFields(court.getCourtRules());
+        return create(court);
+    }
+
+    private void validateCourtRulesFields(CourtRules courtRules) throws CourtInvalidOpeningHours, CourtInvalidAppointmentDuration, CourtInvalidRecurrenceIntervalPeriod {
+        if (courtRules.getOpeningHour() >= courtRules.getClosingHour()) {
+            throw new CourtInvalidOpeningHours();
+        }
+
+        if (courtRules.getAppointmentDuration() < 60 && (courtRules.getAppointmentDuration() % 30) != 0) {
+            throw new CourtInvalidAppointmentDuration();
+        }
+
+        if (courtRules.getRecurrenceIntervalPeriod() < 7) {
+            throw new CourtInvalidRecurrenceIntervalPeriod();
+        }
+
     }
 
     public void deleteById(Long id) throws CourtException {

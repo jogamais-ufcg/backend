@@ -20,19 +20,19 @@ public class CourtRules {
     private Long idCourtRules;
 
     @Column(name="OPENING_HOUR", nullable = false)
-    private Date openingHour;
+    private Integer openingHour;
 
     @Column(name="CLOSING_HOUR", nullable = false)
-    private Date closingHour;
+    private Integer closingHour;
 
     @Column(name="APPOINTMENT_DURATION", nullable = false)
-    private Date appointmentDuration;
+    private Integer appointmentDuration;
 
     @Column(name="APPOINTMENT_PERIOD", nullable = false)
-    private Date appointmentPeriod;
+    private String appointmentPeriod;
 
-    @Column(name="RECURRENCE_INTERVAL_DATE", nullable = false)
-    private Date recurrenceIntervalDate;
+    @Column(name="RECURRENCE_INTERVAL_PERIOD", nullable = false)
+    private Integer recurrenceIntervalPeriod;
 
     @Column(name="AVAILABLE_DAYS", nullable = false)
     private String availableDays;
