@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,6 +18,7 @@ public class UserCreateDTO {
     private String enrollment;
     private String email;
     private String phoneNumber;
+
     private String password;
     private Boolean isUFCGMember;
     private Boolean isStudent;
@@ -34,6 +36,7 @@ public class UserCreateDTO {
                 this.enrollment,
                 this.phoneNumber,
                 this.password,
+                new ArrayList<>(),
                 this.isUFCGMember,
                 this.isStudent,
                 false,

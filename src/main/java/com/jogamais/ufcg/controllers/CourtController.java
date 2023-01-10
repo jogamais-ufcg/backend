@@ -6,7 +6,7 @@ import com.jogamais.ufcg.dto.CourtResponseDTO;
 import com.jogamais.ufcg.exceptions.CourtException;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.services.CourtService;
-import com.jogamais.ufcg.utils.CourtError;
+import com.jogamais.ufcg.utils.errors.CourtError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
