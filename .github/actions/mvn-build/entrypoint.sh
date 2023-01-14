@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 # Build Maven project
-./mvnw clean package -Dmaven.test.skip spring-boot:repackage
+./mvnw clean package -Dspring.profiles.active=prod -Dmaven.test.skip spring-boot:repackage
 
 # Creating output folder
 mkdir output
