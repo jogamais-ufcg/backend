@@ -184,4 +184,14 @@ public class UserController implements IController {
             return UserError.errorUserNotExist();
         }
     }
+
+    @RequestMapping(value = "/{id}/blockedUser", method = RequestMethod.PATCH)
+    public ResponseEntity<?> blockedUser(@PathVariable Long id) {
+        try {
+            userService.blockedUser(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
+        }
+    }
 }

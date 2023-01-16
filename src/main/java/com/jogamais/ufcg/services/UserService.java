@@ -1,6 +1,7 @@
 package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.dto.UserConfirmationDTO;
+import com.jogamais.ufcg.dto.UserCreateDTO;
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Permission;
@@ -202,5 +203,13 @@ public class UserService implements IService<User>, UserDetailsService {
         });
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    public void blockedUser(Long id) throws UserException {
+        if (id != null){
+            User user = getById(id);
+            user.setIsBlocked(true);
+            userRepository.save(user);
+        }
     }
 }
