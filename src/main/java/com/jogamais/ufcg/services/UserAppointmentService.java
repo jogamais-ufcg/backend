@@ -55,7 +55,12 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return userAppointmentList;
     }
 
-    public List<Date> listAvailableTimes(List<UserAppointment> appointments) {
+    public List<Date> getAvailableTimes(Date startAppointmentDate, Court court) {
+        List<UserAppointment> appointments = userRepository.findByStartAppointmentDateAndId_Court(startAppointmentDate, court);
+
+        return this.listAvailableTimes(appointments);
+    }
+    private List<Date> listAvailableTimes(List<UserAppointment> appointments) {
         Calendar calendar = Calendar.getInstance();
 
         List<Date> availableTimes = new ArrayList<>();

@@ -120,16 +120,16 @@ public class UserAppointmentController implements IController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-//    @RequestMapping(value = "/courts/{idCourt}/available-times", method = RequestMethod.GET)
-//    public ResponseEntity<?> getAvailableTimes(@RequestParam("date") Date date, @PathVariable Long idCourt)
-//            throws CourtException {
-//        Court court;
-//        try {
-//            court = courtService.getById(idCourt);
-//        } catch (CourtException e) {
-//            return CourtError.errorCourtNotExist();
-//        }
-//        List<Date> availableTimes = userAppointmentService.findAvailableTimesByDate(date, court);
-//        return new ResponseEntity<>(availableTimes,HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/courts/{idCourt}/available-times", method = RequestMethod.GET)
+    public ResponseEntity<?> getAvailableTimes(@RequestParam("date") Date date, @PathVariable Long idCourt)
+            throws CourtException {
+        Court court;
+        try {
+            court = courtService.getById(idCourt);
+        } catch (CourtException e) {
+            return CourtError.errorCourtNotExist();
+        }
+        List<Date> availableTimes = userAppointmentService.getAvailableTimes(date, court);
+        return new ResponseEntity<>(availableTimes,HttpStatus.OK);
+    }
 }
