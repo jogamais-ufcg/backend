@@ -116,7 +116,11 @@ public class UserAppointmentController implements IController {
         UserAppointment createdUserAppointment = userAppointmentDTO.getModel();
         createdUserAppointment.setAppointmentInterval(userAppointmentDTO.getStartAppointmentDate(), durationInHours);
         createdUserAppointment.setId(appointmentPK);
-        userAppointmentService.create(createdUserAppointment);
+        try {
+            userAppointmentService.create(createdUserAppointment);
+        } catch (AppointmentException e) {
+            return AppointmentError.errorAppointmentTimeUnavailable();
+        }
 
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);
         return new ResponseEntity<>(response, HttpStatus.CREATED);

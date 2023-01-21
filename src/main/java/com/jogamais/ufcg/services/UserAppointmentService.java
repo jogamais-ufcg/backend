@@ -33,7 +33,11 @@ public class UserAppointmentService implements IService<UserAppointment> {
     }
 
     @Override
-    public UserAppointment create(UserAppointment userAppointment) {
+    public UserAppointment create(UserAppointment userAppointment) throws AppointmentException {
+
+        if (this.isAppointmentWithinExistingInterval(userAppointment)) {
+            throw new AppointmentException();
+        }
         return userRepository.save(userAppointment);
     }
 
@@ -72,6 +76,22 @@ public class UserAppointmentService implements IService<UserAppointment> {
         }
         return filteredAppointments;
     }
+
+    public boolean isAppointmentWithinExistingInterval(UserAppointment newAppointment) {
+        List<UserAppointment> existingAppointments = userRepository.findAllById_Court(newAppointment.getId().getCourt());
+        for (UserAppointment existingAppointment : existingAppointments) {
+            if (newAppointment.getStartAppointmentDate().after(existingAppointment.getStartAppointmentDate())
+                    && newAppointment.getStartAppointmentDate().before(existingAppointment.getEndAppointmentDate())) {
+                return true;
+            }
+            if (newAppointment.getStartAppointmentDate().equals(existingAppointment.getStartAppointmentDate())
+                    && newAppointment.getEndAppointmentDate().equals(existingAppointment.getEndAppointmentDate())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public AppointmentPK createAppointmentPk(User user, Court court) {
         AppointmentPK appointmentPK = new AppointmentPK();
