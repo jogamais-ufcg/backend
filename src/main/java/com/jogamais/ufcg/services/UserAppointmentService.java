@@ -6,8 +6,8 @@ import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
 import com.jogamais.ufcg.models.pk.AppointmentPK;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.jogamais.ufcg.repositories.UserAppointmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -55,46 +55,22 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return userAppointmentList;
     }
 
-    public List<Date> getAvailableTimes(Date startAppointmentDate, Court court) {
-        List<UserAppointment> appointments = userRepository.findByStartAppointmentDateAndId_Court(startAppointmentDate, court);
+    public List<UserAppointment> findAppointmentsByDayAndCourt(Date date, Court court) {
+        List<UserAppointment> appointments = userRepository.findAllById_Court(court);
+        Calendar appointmentCalendar = Calendar.getInstance();
+        Calendar dateCalendar = Calendar.getInstance();
+        dateCalendar.setTime(date);
+        List<UserAppointment> filteredAppointments = new ArrayList<>();
 
-        return this.listAvailableTimes(appointments);
-    }
-    private List<Date> listAvailableTimes(List<UserAppointment> appointments) {
-        Calendar calendar = Calendar.getInstance();
-
-        List<Date> availableTimes = new ArrayList<>();
         for (UserAppointment appointment : appointments) {
-            Date startDate = appointment.getStartAppointmentDate();
-            Date endDate = appointment.getEndAppointmentDate();
-            calendar.setTime(startDate);
-
-            long durationInMilliseconds = endDate.getTime() - startDate.getTime();
-            int durationInHours = (int) (durationInMilliseconds / (1000 * 60 * 60));
-
-            while (calendar.getTime().before(endDate)) {
-                Date startTime = calendar.getTime();
-                calendar.add(Calendar.HOUR_OF_DAY, durationInHours);
-                Date endTime = calendar.getTime();
-
-                boolean isAvailable = true;
-                for (UserAppointment a : appointments) {
-                    if (a.getId().equals(appointment.getId())) {
-                        continue;
-                    }
-                    if (!(endTime.before(a.getStartAppointmentDate()) || startTime.after(a.getEndAppointmentDate()))) {
-                        isAvailable = false;
-                        break;
-                    }
-                }
-
-                if (isAvailable) {
-                    availableTimes.add(startTime);
-                }
+            appointmentCalendar.setTime(appointment.getStartAppointmentDate());
+            if (appointmentCalendar.get(Calendar.DAY_OF_MONTH) == dateCalendar.get(Calendar.DAY_OF_MONTH)
+                    && appointmentCalendar.get(Calendar.MONTH) == dateCalendar.get(Calendar.MONTH)
+                    && appointmentCalendar.get(Calendar.YEAR) == dateCalendar.get(Calendar.YEAR)) {
+                filteredAppointments.add(appointment);
             }
         }
-
-        return availableTimes;
+        return filteredAppointments;
     }
 
     public AppointmentPK createAppointmentPk(User user, Court court) {

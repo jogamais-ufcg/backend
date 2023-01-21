@@ -13,12 +13,14 @@ import com.jogamais.ufcg.models.pk.AppointmentPK;
 import com.jogamais.ufcg.services.CourtService;
 import com.jogamais.ufcg.services.UserAppointmentService;
 import com.jogamais.ufcg.services.UserService;
+import com.jogamais.ufcg.utils.DateConverter;
 import com.jogamais.ufcg.utils.errors.AppointmentError;
 import com.jogamais.ufcg.utils.errors.CourtError;
 import com.jogamais.ufcg.utils.errors.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -120,8 +122,8 @@ public class UserAppointmentController implements IController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/courts/{idCourt}/available-times", method = RequestMethod.GET)
-    public ResponseEntity<?> getAvailableTimes(@RequestParam("date") Date date, @PathVariable Long idCourt)
+    @RequestMapping(value = "/courts/{idCourt}/day-and-court", method = RequestMethod.GET)
+    public ResponseEntity<?> getAppointmentsByDayAndCourt(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @PathVariable Long idCourt)
             throws CourtException {
         Court court;
         try {
@@ -129,7 +131,8 @@ public class UserAppointmentController implements IController {
         } catch (CourtException e) {
             return CourtError.errorCourtNotExist();
         }
-        List<Date> availableTimes = userAppointmentService.getAvailableTimes(date, court);
-        return new ResponseEntity<>(availableTimes,HttpStatus.OK);
+
+        List<UserAppointment> appointments = userAppointmentService.findAppointmentsByDayAndCourt(date, court);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 }
