@@ -2,10 +2,7 @@ package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.dto.UserAppointmentDTO;
 import com.jogamais.ufcg.dto.UserAppointmentResponseDTO;
-import com.jogamais.ufcg.exceptions.AppointmentException;
-import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
-import com.jogamais.ufcg.exceptions.CourtException;
-import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
@@ -120,6 +117,8 @@ public class UserAppointmentController implements IController {
             userAppointmentService.create(createdUserAppointment);
         } catch (AppointmentException e) {
             return AppointmentError.errorAppointmentTimeUnavailable();
+        } catch (UserAlreadyHasAppointmentException e) {
+            return UserError.errorAppointmentUserHasExisting();
         }
 
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);

@@ -2,6 +2,8 @@ package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.exceptions.AppointmentException;
 import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
+import com.jogamais.ufcg.exceptions.UserAlreadyHasAppointmentException;
+import com.jogamais.ufcg.exceptions.UserException;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
@@ -33,7 +35,11 @@ public class UserAppointmentService implements IService<UserAppointment> {
     }
 
     @Override
-    public UserAppointment create(UserAppointment userAppointment) throws AppointmentException {
+    public UserAppointment create(UserAppointment userAppointment) throws AppointmentException, UserAlreadyHasAppointmentException {
+
+        if (userRepository.existsById_User(userAppointment.getId().getUser())) {
+            throw new UserAlreadyHasAppointmentException();
+        }
 
         if (this.isAppointmentWithinExistingInterval(userAppointment)) {
             throw new AppointmentException();
