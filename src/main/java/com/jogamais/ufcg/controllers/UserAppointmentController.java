@@ -127,7 +127,7 @@ public class UserAppointmentController implements IController {
 
     @RequestMapping(value = "/courts/{idCourt}/day-and-court", method = RequestMethod.GET)
     public ResponseEntity<?> getAppointmentsByDayAndCourt(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @PathVariable Long idCourt)
-            throws CourtException {
+            throws CourtException, NoAppointmentsException {
         Court court;
         try {
             court = courtService.getById(idCourt);
@@ -135,7 +135,12 @@ public class UserAppointmentController implements IController {
             return CourtError.errorCourtNotExist();
         }
 
-        List<UserAppointment> appointments = userAppointmentService.findAppointmentsByDayAndCourt(date, court);
+        List<UserAppointment> appointments;
+        try {
+            appointments = userAppointmentService.findAppointmentsByDayAndCourt(date, court);
+        } catch (NoAppointmentsException e) {
+            return AppointmentError.errorAppointmentCourtUnavailable();
+        }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 }

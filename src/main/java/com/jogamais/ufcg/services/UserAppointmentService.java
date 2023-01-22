@@ -1,9 +1,6 @@
 package com.jogamais.ufcg.services;
 
-import com.jogamais.ufcg.exceptions.AppointmentException;
-import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
-import com.jogamais.ufcg.exceptions.UserAlreadyHasAppointmentException;
-import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
@@ -65,7 +62,7 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return userAppointmentList;
     }
 
-    public List<UserAppointment> findAppointmentsByDayAndCourt(Date date, Court court) {
+    public List<UserAppointment> findAppointmentsByDayAndCourt(Date date, Court court) throws NoAppointmentsException {
         List<UserAppointment> appointments = userRepository.findAllById_Court(court);
         Calendar appointmentCalendar = Calendar.getInstance();
         Calendar dateCalendar = Calendar.getInstance();
@@ -80,6 +77,11 @@ public class UserAppointmentService implements IService<UserAppointment> {
                 filteredAppointments.add(appointment);
             }
         }
+
+        if (filteredAppointments.isEmpty()) {
+            throw new NoAppointmentsException();
+        }
+
         return filteredAppointments;
     }
 
