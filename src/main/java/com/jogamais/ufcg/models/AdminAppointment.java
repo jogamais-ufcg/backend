@@ -1,11 +1,10 @@
 package com.jogamais.ufcg.models;
 
-import java.util.Date;
-
 import com.jogamais.ufcg.models.pk.AppointmentPK;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Builder

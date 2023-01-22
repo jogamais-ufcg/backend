@@ -18,7 +18,7 @@ public class Court {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCourt;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
     @Column(name = "PHOTO", nullable = false)
@@ -27,7 +27,7 @@ public class Court {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-//    @OneToOne(cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "COURT_RULES_ID", referencedColumnName = "idCourtRules")
-//    private CourtRules courtRules;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "COURT_RULES_ID", referencedColumnName = "idCourtRules")
+    private CourtRules courtRules;
 }
