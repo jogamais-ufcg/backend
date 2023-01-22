@@ -15,6 +15,8 @@ public class AppointmentError {
 
     static final String TIME_UNAVAILABLE = "Horário de agendamento indisponível.";
 
+    static final String COURT_UNAVAILABLE = "Esta quadra não possui agendamentos nesse dia!";
+
     public static ResponseEntity<CustomTypeError> errorAppointmentNotExist() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.APPOINTMENT_NOT_EXIST),
                 HttpStatus.NOT_FOUND);
@@ -30,4 +32,8 @@ public class AppointmentError {
                 HttpStatus.CONFLICT);
     }
 
+    public static ResponseEntity<CustomTypeError> errorAppointmentCourtUnavailable() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.COURT_UNAVAILABLE),
+                HttpStatus.NOT_FOUND);
+    }
 }
