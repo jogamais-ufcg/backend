@@ -44,10 +44,10 @@ public class CourtDTO {
 
         public Court getModel() {
                 return new Court(
-                                null,
-                                this.name,
-                                this.photo,
-                                this.description,
-                                getCourtRules());
+                        null,
+                        this.name,
+                        this.photo,
+                        this.description,
+                        getCourtRules());
         }
 }

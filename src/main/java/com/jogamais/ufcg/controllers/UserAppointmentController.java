@@ -2,10 +2,7 @@ package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.dto.UserAppointmentDTO;
 import com.jogamais.ufcg.dto.UserAppointmentResponseDTO;
-import com.jogamais.ufcg.exceptions.AppointmentException;
-import com.jogamais.ufcg.exceptions.AppointmentUserOrCourtExcpetion;
-import com.jogamais.ufcg.exceptions.CourtException;
-import com.jogamais.ufcg.exceptions.UserException;
+import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
@@ -13,16 +10,19 @@ import com.jogamais.ufcg.models.pk.AppointmentPK;
 import com.jogamais.ufcg.services.CourtService;
 import com.jogamais.ufcg.services.UserAppointmentService;
 import com.jogamais.ufcg.services.UserService;
+import com.jogamais.ufcg.utils.DateConverter;
 import com.jogamais.ufcg.utils.errors.AppointmentError;
 import com.jogamais.ufcg.utils.errors.CourtError;
 import com.jogamais.ufcg.utils.errors.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -96,7 +96,7 @@ public class UserAppointmentController implements IController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam Long idUser,
+    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam int durationInHours, @RequestParam Long idUser,
             @RequestParam Long idCourt) throws UserException, CourtException {
         User user;
         Court court;
@@ -111,10 +111,31 @@ public class UserAppointmentController implements IController {
 
         AppointmentPK appointmentPK = userAppointmentService.createAppointmentPk(user, court);
         UserAppointment createdUserAppointment = userAppointmentDTO.getModel();
+        createdUserAppointment.setAppointmentInterval(userAppointmentDTO.getStartAppointmentDate(), durationInHours);
         createdUserAppointment.setId(appointmentPK);
-        userAppointmentService.create(createdUserAppointment);
+        try {
+            userAppointmentService.create(createdUserAppointment);
+        } catch (AppointmentException e) {
+            return AppointmentError.errorAppointmentTimeUnavailable();
+        } catch (UserAlreadyHasAppointmentException e) {
+            return UserError.errorAppointmentUserHasExisting();
+        }
 
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/courts/{idCourt}/day-and-court", method = RequestMethod.GET)
+    public ResponseEntity<?> getAppointmentsByDayAndCourt(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @PathVariable Long idCourt)
+            throws CourtException {
+        Court court;
+        try {
+            court = courtService.getById(idCourt);
+        } catch (CourtException e) {
+            return CourtError.errorCourtNotExist();
+        }
+
+        List<UserAppointment> appointments = userAppointmentService.findAppointmentsByDayAndCourt(date, court);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 }

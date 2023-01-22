@@ -1,5 +1,6 @@
 package com.jogamais.ufcg.utils.errors;
 
+import com.jogamais.ufcg.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -18,6 +19,8 @@ public class UserError {
     static final String MISSING_FILE_BACK = "O verso do documento é obrigatório!";
     private static final String INVALID_CPF = "O número de CPF informado é inválido!";
     private static final String INVALID_ENROLLMENT = "O número de matrícula informado é inválido!";
+
+    static final String USER_HAS_EXISTING_APPOINTMENT_ERROR = "Este usuário já possui um agendamento.";
 
     public static ResponseEntity<CustomTypeError> errorUserNotExist() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.USER_NOT_EXIST),
@@ -57,5 +60,10 @@ public class UserError {
     public static ResponseEntity<CustomTypeError> errorInvalidEnrollment() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.INVALID_ENROLLMENT),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    public static ResponseEntity<CustomTypeError> errorAppointmentUserHasExisting() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.USER_HAS_EXISTING_APPOINTMENT_ERROR),
+                HttpStatus.CONFLICT);
     }
 }

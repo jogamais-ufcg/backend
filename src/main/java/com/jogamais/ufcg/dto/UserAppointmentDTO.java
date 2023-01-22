@@ -10,13 +10,14 @@ import java.util.Date;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class UserAppointmentDTO {
-    private Date appointmentDate;
+    private Date startAppointmentDate;
     private String playerList;
 
     public UserAppointment getModel() {
         return new UserAppointment(
                 null,
-                this.appointmentDate,
+                this.startAppointmentDate,
+                null,
                 this.playerList);
     }
 }

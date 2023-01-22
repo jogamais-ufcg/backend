@@ -8,11 +8,14 @@ import java.util.Date;
 @Getter
 public class UserAppointmentResponseDTO {
 
-    private final Date appointmentDate;
+    private final Date startAppointmentDate;
+
+    private final Date endAppointmentDate;
     private final String playerList;
 
     public UserAppointmentResponseDTO(UserAppointment userAppointment) {
-        this.appointmentDate = userAppointment.getAppointmentDate();
+        this.startAppointmentDate = userAppointment.getStartAppointmentDate();
+        this.endAppointmentDate = userAppointment.getEndAppointmentDate();
         this.playerList = userAppointment.getPlayerList();
     }
 }
