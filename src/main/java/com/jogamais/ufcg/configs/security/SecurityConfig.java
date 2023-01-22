@@ -38,12 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/login/**", "/token/refresh/**").permitAll();
         http.authorizeRequests().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui/**", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui/**").permitAll();
-//        http.authorizeRequests().antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN");
-        http.authorizeRequests().antMatchers(GET, "/users/**").permitAll();
-        http.authorizeRequests().antMatchers(POST, "/users/**").permitAll();
-//        http.authorizeRequests().antMatchers(POST, "/users/**").hasAnyAuthority("ADMIN");
-        http.authorizeRequests().anyRequest().permitAll();
-//        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/users/**").hasAnyAuthority("ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new JwtAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
