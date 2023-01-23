@@ -82,6 +82,8 @@ public class UserAppointmentController implements IController {
             return AppointmentError.errorAppointmentNotExist();
         } catch (AppointmentUserOrCourtExcpetion e) {
             return AppointmentError.errorAppointmentUserOrCourt();
+        } catch (CancellationNotAllowedException e) {
+            return AppointmentError.errorAppointmentCancellationNotAllowed();
         }
     }
 
