@@ -43,7 +43,7 @@ public class CourtController implements IController {
             courtService.deleteById(id);
             return new ResponseEntity<>("Quadra com ID: " + id + " removida com sucesso!", HttpStatus.OK);
         } catch(CourtException e) {
-            return CourtError.errorUnavailableAppointment();
+            return CourtError.errorCourtNotExist();
         }
     }
 
