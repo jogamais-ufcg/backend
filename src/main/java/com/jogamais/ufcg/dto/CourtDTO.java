@@ -27,9 +27,9 @@ public class CourtDTO {
 
         private String availableDays;
 
-        private boolean isOnlyUfcg;
+        private Boolean isOnlyUfcg;
 
-        private CourtRules getCourtRules() {
+        public CourtRules getCourtRules() {
                 return new CourtRules(
                         null,
                         this.openingHour,
