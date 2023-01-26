@@ -11,6 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,9 +49,22 @@ public class UserAppointmentService implements IService<UserAppointment> {
     }
 
     public void deleteByUserAndCourt(User user, Court court)
-            throws AppointmentException, AppointmentUserOrCourtExcpetion {
+            throws AppointmentException, AppointmentUserOrCourtExcpetion, CancellationNotAllowedException {
         UserAppointment userAppointment = findByUserAndCourt(user, court);
+
+        if (this.isWithInTwoDays(userAppointment.getStartAppointmentDate())) {
+            throw new CancellationNotAllowedException();
+        }
+
         userRepository.delete(userAppointment);
+    }
+
+    private boolean isWithInTwoDays(Date startAppointmentDate) {
+        LocalDate startDate = LocalDateTime.ofInstant(startAppointmentDate.toInstant(), ZoneId.systemDefault()).toLocalDate();
+        LocalDate today = LocalDate.now();
+        long daysBetween = ChronoUnit.DAYS.between(today, startDate);
+
+        return daysBetween <= 2;
     }
 
     @Override
