@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 public class CourtError {
 
-    static final String COURT_NOT_EXIST = "Quadra(s) não cadastrada(s).";
+    static final String COURT_NOT_EXIST = "Quadra não cadastrada.";
 
     static final String COURT_ALREADY_EXIST = "Essa quadra já está cadastrada no sistema, verifique se o nome está correto.";
     static final String UNAVAILABLE_APPOINTMENT = "O horário: não está disponível.";
