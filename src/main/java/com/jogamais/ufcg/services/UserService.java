@@ -50,8 +50,6 @@ public class UserService implements IService<User>, UserDetailsService {
 
     @Override
     public User create(User user) {
-        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         return userRepository.save(user);
 
     }
