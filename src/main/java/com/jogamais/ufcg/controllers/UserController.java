@@ -137,7 +137,7 @@ public class UserController implements IController {
                 User user = userService.getByEmail(email);
                 String access_token = JWT.create()
                         .withSubject(user.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 20 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 168 * 60 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("permissions", user.getPermissions().stream().map(Permission::getDescription).collect(Collectors.toList()))
                         .sign(algorithm);
