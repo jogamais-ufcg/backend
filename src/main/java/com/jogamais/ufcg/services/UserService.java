@@ -51,6 +51,7 @@ public class UserService implements IService<User>, UserDetailsService {
     @Override
     public User create(User user) {
         return userRepository.save(user);
+
     }
 
     public Permission createPermission(Permission permission) throws PermissionException {
