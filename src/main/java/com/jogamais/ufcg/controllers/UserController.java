@@ -51,6 +51,12 @@ public class UserController implements IController {
         }
     }
 
+    @RequestMapping(value = "/{email}", method = RequestMethod.GET)
+    public ResponseEntity<?> getByEmail(@PathVariable String email) {
+        User user = userService.getByEmail(email);
+        return new ResponseEntity<>(new UserResponseDTO(user), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         try {
