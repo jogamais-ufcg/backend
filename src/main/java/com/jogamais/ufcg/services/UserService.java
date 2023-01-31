@@ -1,7 +1,6 @@
 package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.dto.UserConfirmationDTO;
-import com.jogamais.ufcg.dto.UserCreateDTO;
 import com.jogamais.ufcg.dto.UserEditDTO;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Permission;

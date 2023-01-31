@@ -6,12 +6,10 @@ import com.jogamais.ufcg.exceptions.CourtInvalidOpeningHours;
 import com.jogamais.ufcg.exceptions.CourtInvalidRecurrenceIntervalPeriod;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.CourtRules;
-import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.CourtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
