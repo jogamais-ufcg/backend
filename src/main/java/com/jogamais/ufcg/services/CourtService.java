@@ -1,9 +1,7 @@
 package com.jogamais.ufcg.services;
 
-import com.jogamais.ufcg.exceptions.CourtException;
-import com.jogamais.ufcg.exceptions.CourtInvalidAppointmentDuration;
-import com.jogamais.ufcg.exceptions.CourtInvalidOpeningHours;
-import com.jogamais.ufcg.exceptions.CourtInvalidRecurrenceIntervalPeriod;
+import com.jogamais.ufcg.dto.CourtRulesEditDTO;
+import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.CourtRules;
 import com.jogamais.ufcg.repositories.CourtRepository;
@@ -68,5 +66,63 @@ public class CourtService implements IService<Court> {
     @Override
     public Page<Court> search(String searchTerm, int page, int size) {
         return null;
+    }
+
+    public Court editCourt(Long idCourt, CourtRulesEditDTO courtRulesEditDTO) throws CourtException, CourtInvalidOpeningHours, CourtInvalidRecurrenceIntervalPeriod, CourtInvalidAppointmentDuration, CourtInvalidInputException {
+        Court court = getById(idCourt);
+
+        if (courtRulesEditDTO.getName() != null) {
+            if (courtRulesEditDTO.getName().isEmpty()) {
+                throw new CourtInvalidInputException();
+            }
+            court.setName(courtRulesEditDTO.getName());
+        }
+
+        if (courtRulesEditDTO.getPhoto() != null) {
+            if (courtRulesEditDTO.getPhoto().isEmpty()) {
+                throw new CourtInvalidInputException();
+            }
+            court.setPhoto(courtRulesEditDTO.getPhoto());
+        }
+
+        if (courtRulesEditDTO.getDescription() != null) {
+            if (courtRulesEditDTO.getDescription().isEmpty()) {
+                throw new CourtInvalidInputException();
+            }
+            court.setDescription(courtRulesEditDTO.getDescription());
+        }
+
+        if (courtRulesEditDTO.getIsOnlyUfcg() != null) {
+            court.getCourtRules().setOnlyUfcg(courtRulesEditDTO.getIsOnlyUfcg());
+        }
+
+        if (courtRulesEditDTO.getOpeningHour() != null) {
+            court.getCourtRules().setOpeningHour(courtRulesEditDTO.getOpeningHour());
+            validateCourtRulesFields(court.getCourtRules());
+        }
+
+        if (courtRulesEditDTO.getClosingHour() != null){
+            court.getCourtRules().setClosingHour(courtRulesEditDTO.getClosingHour());
+        }
+
+        if (courtRulesEditDTO.getAppointmentDuration() != null) {
+            court.getCourtRules().setAppointmentDuration(courtRulesEditDTO.getAppointmentDuration());
+            validateCourtRulesFields(court.getCourtRules());
+        }
+
+        if (courtRulesEditDTO.getAppointmentPeriod() != null) {
+            court.getCourtRules().setAppointmentPeriod(courtRulesEditDTO.getAppointmentPeriod());
+            validateCourtRulesFields(court.getCourtRules());
+        }
+
+        if (courtRulesEditDTO.getAvailableDays() != null) {
+            if (courtRulesEditDTO.getAvailableDays().isEmpty()) {
+                throw new CourtInvalidInputException();
+            }
+            court.getCourtRules().setAvailableDays(courtRulesEditDTO.getAvailableDays());
+        }
+
+        return create(court);
+
     }
 }
