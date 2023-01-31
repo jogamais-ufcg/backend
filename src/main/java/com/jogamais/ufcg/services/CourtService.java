@@ -6,10 +6,12 @@ import com.jogamais.ufcg.exceptions.CourtInvalidOpeningHours;
 import com.jogamais.ufcg.exceptions.CourtInvalidRecurrenceIntervalPeriod;
 import com.jogamais.ufcg.models.Court;
 import com.jogamais.ufcg.models.CourtRules;
+import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.repositories.CourtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,6 +60,16 @@ public class CourtService implements IService<Court> {
     public List<Court> findAll() {
         List<Court> courts = courtRepository.findAll();
         return courts;
+    }
+
+    public Court getByName(String name) throws CourtException, CourtInvalidOpeningHours, CourtInvalidAppointmentDuration, CourtInvalidRecurrenceIntervalPeriod {
+        Court foundCourt = courtRepository.findByName(name);
+        if (foundCourt != null) {
+            throw new CourtException();
+        }
+        validateCourtRulesFields(foundCourt.getCourtRules());
+
+        return foundCourt;
     }
 
     @Override

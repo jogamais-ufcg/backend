@@ -3,13 +3,13 @@ package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.dto.CourtDTO;
 import com.jogamais.ufcg.dto.CourtResponseDTO;
-import com.jogamais.ufcg.exceptions.CourtException;
-import com.jogamais.ufcg.exceptions.CourtInvalidAppointmentDuration;
-import com.jogamais.ufcg.exceptions.CourtInvalidOpeningHours;
-import com.jogamais.ufcg.exceptions.CourtInvalidRecurrenceIntervalPeriod;
+import com.jogamais.ufcg.dto.UserResponseDTO;
+import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
+import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.services.CourtService;
 import com.jogamais.ufcg.utils.errors.CourtError;
+import com.jogamais.ufcg.utils.errors.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,6 +53,22 @@ public class CourtController implements IController {
         List<CourtResponseDTO> response = courtsList.stream().map(CourtResponseDTO::new).toList();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public ResponseEntity<?> getByName(@PathVariable String name)  {
+        try {
+            Court court = courtService.getByName(name);
+            return new ResponseEntity<>(new CourtResponseDTO(court), HttpStatus.OK);
+        } catch (CourtException e) {
+            return CourtError.errorCourtAlreadyExist();
+        } catch (CourtInvalidOpeningHours e) {
+            return CourtError.errorCourtInvalidOpeningHours();
+        } catch (CourtInvalidRecurrenceIntervalPeriod e) {
+            return CourtError.errorCourtInvalidRecurrenceIntervalPeriod();
+        } catch (CourtInvalidAppointmentDuration e) {
+            return CourtError.errorCourtInvalidAppointmentDuration();
+        }
     }
 
     @PostMapping()
