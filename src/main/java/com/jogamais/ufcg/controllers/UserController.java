@@ -41,14 +41,10 @@ public class UserController implements IController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        try {
-            User user = userService.getById(id);
-            return new ResponseEntity<>(new UserResponseDTO(user), HttpStatus.OK);
-        } catch (UserException e) {
-            return UserError.errorUserNotExist();
-        }
+    @RequestMapping(value = "/{email}", method = RequestMethod.GET)
+    public ResponseEntity<?> getByEmail(@PathVariable String email) {
+        User user = userService.getByEmail(email);
+        return new ResponseEntity<>(new UserResponseDTO(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
