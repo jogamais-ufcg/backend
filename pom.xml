@@ -18,6 +18,17 @@
 		<start-class>com.jogamais.ufcg.UfcgApplication</start-class>
 		<java-jwt.version>3.19.2</java-jwt.version>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.google.cloud</groupId>
+				<artifactId>spring-cloud-gcp-dependencies</artifactId>
+				<version>3.3.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,9 +94,8 @@
             <version>2.3.5</version>
         </dependency>
 		<dependency>
-			<groupId>com.google.cloud.sql</groupId>
-			<artifactId>postgres-socket-factory</artifactId>
-			<version>1.9.0</version>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
 		</dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
