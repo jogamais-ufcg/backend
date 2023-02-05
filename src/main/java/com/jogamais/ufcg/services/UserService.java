@@ -36,6 +36,9 @@ public class UserService implements IService<User>, UserDetailsService {
     @Autowired
     private PermissionRepository permissionRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     public User getById(Long id) throws UserException {
         return userRepository.findById(id).orElseThrow(UserException::new);
     }
@@ -50,7 +53,9 @@ public class UserService implements IService<User>, UserDetailsService {
 
     @Override
     public User create(User user) {
-        return userRepository.save(user);
+        userRepository.save(user);
+        emailService.sendConfirmationEmail(user);
+        return user;
 
     }
 
