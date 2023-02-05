@@ -43,4 +43,9 @@ public class AppointmentError {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.CANCELLATION_NOT_ALLOWED),
                 HttpStatus.FORBIDDEN);
     }
+
+    public static ResponseEntity<CustomTypeError> errorAppointmentsNotExist() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.APPOINTMENTS_NOT_EXIST),
+                HttpStatus.NOT_FOUND);
+    }
 }

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/appointments/users")
@@ -144,5 +145,22 @@ public class UserAppointmentController implements IController {
             return AppointmentError.errorAppointmentCourtUnavailable();
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/my-appointments", method = RequestMethod.GET)
+    public ResponseEntity<?> getMyAppointments(@RequestParam("id") Long idUser) throws UserException, NoAppointmentsException {
+
+        List<UserAppointment> appointments;
+        User user;
+        try {
+            user = userService.getById(idUser);
+            appointments = userAppointmentService.getMyAppointments(user);
+        } catch (NoAppointmentsException e) {
+            return AppointmentError.errorAppointmentsNotExist();
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
+        }
+        List<UserAppointmentResponseDTO> appointmentResponseDTOS = appointments.stream().map(UserAppointmentResponseDTO::new).collect(Collectors.toList());
+        return new ResponseEntity<>(appointmentResponseDTOS, HttpStatus.OK);
     }
 }

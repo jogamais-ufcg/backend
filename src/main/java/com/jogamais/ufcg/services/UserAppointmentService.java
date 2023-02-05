@@ -126,4 +126,14 @@ public class UserAppointmentService implements IService<UserAppointment> {
 
         return appointmentPK;
     }
+
+    public List<UserAppointment> getMyAppointments(User user) throws NoAppointmentsException {
+        List<UserAppointment> appointments = userRepository.findAllById_User(user);
+
+        if (appointments.isEmpty()) {
+            throw new NoAppointmentsException();
+        }
+
+        return appointments;
+    }
 }
