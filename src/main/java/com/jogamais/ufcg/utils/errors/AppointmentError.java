@@ -19,9 +19,16 @@ public class AppointmentError {
 
     static final String CANCELLATION_NOT_ALLOWED = "Cancelar agendamento com menos de 2 dias de antecedência não é permitido!";
 
+    static final String INVALID_DATE = "Data de agendamento inválida! Confira o dia e o horário novamente.";
+
     public static ResponseEntity<CustomTypeError> errorAppointmentNotExist() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.APPOINTMENT_NOT_EXIST),
                 HttpStatus.NOT_FOUND);
+    }
+
+    public static ResponseEntity<CustomTypeError> errorAppointmentInvalidDate() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.INVALID_DATE),
+                HttpStatus.BAD_REQUEST);
     }
 
     public static ResponseEntity<CustomTypeError> errorAppointmentUserOrCourt() {
@@ -37,5 +44,10 @@ public class AppointmentError {
     public static ResponseEntity<CustomTypeError> errorAppointmentCancellationNotAllowed() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.CANCELLATION_NOT_ALLOWED),
                 HttpStatus.FORBIDDEN);
+    }
+
+    public static ResponseEntity<CustomTypeError> errorAppointmentsNotExist() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.APPOINTMENTS_NOT_EXIST),
+                HttpStatus.NOT_FOUND);
     }
 }

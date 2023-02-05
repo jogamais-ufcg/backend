@@ -4,6 +4,7 @@ import com.jogamais.ufcg.dto.UserAppointmentDTO;
 import com.jogamais.ufcg.dto.UserAppointmentResponseDTO;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
+import com.jogamais.ufcg.models.CourtRules;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
 import com.jogamais.ufcg.models.pk.AppointmentPK;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/appointments/users")
@@ -100,7 +102,7 @@ public class UserAppointmentController implements IController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam int durationInHours, @RequestParam Long idUser,
+    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam Long idUser,
             @RequestParam Long idCourt) throws UserException, CourtException {
         User user;
         Court court;
@@ -115,14 +117,17 @@ public class UserAppointmentController implements IController {
 
         AppointmentPK appointmentPK = userAppointmentService.createAppointmentPk(user, court);
         UserAppointment createdUserAppointment = userAppointmentDTO.getModel();
-        createdUserAppointment.setAppointmentInterval(userAppointmentDTO.getStartAppointmentDate(), durationInHours);
+        Integer appointmentDuration = court.getCourtRules().getAppointmentDuration();
+        createdUserAppointment.setAppointmentInterval(userAppointmentDTO.getStartAppointmentDate(), appointmentDuration);
         createdUserAppointment.setId(appointmentPK);
         try {
-            userAppointmentService.create(createdUserAppointment);
+            userAppointmentService.create(createdUserAppointment, user, court);
         } catch (AppointmentException e) {
             return AppointmentError.errorAppointmentTimeUnavailable();
         } catch (UserAlreadyHasAppointmentException e) {
             return UserError.errorAppointmentUserHasExisting();
+        } catch (InvalidAppointmentDateException e) {
+            return AppointmentError.errorAppointmentInvalidDate();
         }
 
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);
@@ -157,6 +162,22 @@ public class UserAppointmentController implements IController {
             return CourtError.errorCourtNotExist();
         } catch (NoAppointmentsException e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/my-appointments", method = RequestMethod.GET)
+    public ResponseEntity<?> getMyAppointments(@RequestParam("id") Long idUser) throws UserException, NoAppointmentsException {
+
+        List<UserAppointment> appointments;
+        User user;
+        try {
+            user = userService.getById(idUser);
+            appointments = userAppointmentService.getMyAppointments(user);
+        } catch (NoAppointmentsException e) {
+            return AppointmentError.errorAppointmentsNotExist();
+        } catch (UserException e) {
+            return UserError.errorUserNotExist();
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }

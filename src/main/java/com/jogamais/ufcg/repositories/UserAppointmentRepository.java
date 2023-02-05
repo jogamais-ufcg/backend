@@ -19,4 +19,9 @@ public interface UserAppointmentRepository extends JpaRepository<UserAppointment
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserAppointment u WHERE u.id.user = :user")
     boolean existsById_User(@Param("user") User user);
+
+    List<UserAppointment> findAllById_User(User user);
+
+    List<UserAppointment> findAllById_UserAndId_Court(User user, Court court);
+
 }
