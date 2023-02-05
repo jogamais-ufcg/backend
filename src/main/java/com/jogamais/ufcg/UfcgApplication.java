@@ -17,4 +17,5 @@ public class UfcgApplication {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
 }

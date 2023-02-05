@@ -95,6 +95,11 @@ public class UserService implements IService<User>, UserDetailsService {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
+        Permission permission = permissionRepository.findByDescription("USER");
+        if (permission != null) {
+            user.getPermissions().add(permission);
+        }
+
         return create(user);
     }
 

@@ -1,11 +1,13 @@
 # Backend
 
 ## Como fazer build?
-O seguinte comando gera um .jar na pasta target
-```bash
-./mvnw clean package -Dspring.profiles.active=prod -Dmaven.test.skip spring-boot:repackage -X
+
 ```
-você pode executar o jar gerado com:
-```bash
-java -jar target/ufcg-0.0.1-SNAPSHOT.jar
+docker build -t joga-mais-backend .
+```
+
+## Como rodar?
+
+```
+docker run -d -p 8080:8080 joga-mais-backend
 ```

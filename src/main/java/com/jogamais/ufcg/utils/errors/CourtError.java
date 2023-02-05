@@ -18,6 +18,8 @@ public class CourtError {
 
     static final String INVALID_RECURRENCE_INTERVAL_PERIOD = "O intervalo de recorrência precisa ser superior à 7 dias.";
 
+    static final String INVALID_INPUT = "Por favor, preencha com um valor válido!";
+
     public static ResponseEntity<CustomTypeError> errorUnavailableAppointment() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(CourtError.UNAVAILABLE_APPOINTMENT),
                 HttpStatus.CONFLICT);
@@ -45,6 +47,11 @@ public class CourtError {
 
     public static ResponseEntity<CustomTypeError> errorCourtInvalidRecurrenceIntervalPeriod() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(CourtError.INVALID_RECURRENCE_INTERVAL_PERIOD),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    public static ResponseEntity<CustomTypeError> errorInvalidInput() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(CourtError.INVALID_INPUT),
                 HttpStatus.BAD_REQUEST);
     }
 
