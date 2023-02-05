@@ -52,7 +52,7 @@ public class EmailService {
         emailModel.setEmailTo(user.getEmail());
         emailModel.setSubject("Confirmação de endereço de e-mail");
         emailModel.setSendDateEmail(LocalDateTime.now());
-        String confirmationLink = "http://localhost:8080/users/" + user.getId() + "/confirmations";
+        String confirmationLink = "http://localhost:3000/cadastro/sucesso?id=" + user.getId();
         emailModel.setText("Por favor, confirme seu e-mail clicando no link: " + confirmationLink);
         try{
             SimpleMailMessage message = new SimpleMailMessage();
