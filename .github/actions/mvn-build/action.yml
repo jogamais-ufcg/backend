@@ -1,8 +1,0 @@
-name: 'mvn-build'
-description: 'Build SpringBoot Project with maven'
-branding:
-  icon: 'alert-circle'
-  color: 'green'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
