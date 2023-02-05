@@ -40,14 +40,14 @@ insert into "court_rules" ("appointment_duration", "appointment_period", "availa
 values (60, 'string', 'seg,ter,qua,qui,sex', 18, TRUE, 8, 10);
 
 insert into "court" ("description", "name", "photo", "court_rules_id")
-values ('Medindo 18 metros de comprimento por 9 metros de largura, esta quadra é ideal para jogadores de todos os níveis e é perfeita para competições, treinos ou jogos informais com amigos.', 'Quadra de Vôlei 1', 'photo-volei', 1);
+values ('Medindo 18 metros de comprimento por 9 metros de largura, esta quadra é ideal para jogadores de todos os níveis e é perfeita para competições, treinos ou jogos informais com amigos.', 'Quadra de Vôlei', 'photo-volei', 1);
 
 
 insert into "court_rules" ("appointment_duration", "appointment_period", "available_days", "closing_hour", "is_only_ufcg", "opening_hour", "recurrence_interval_period")
 values (90, 'string', 'seg,ter,qui,sex', 16, TRUE, 10, 10);
 
 insert into "court" ("description", "name", "photo", "court_rules_id")
-values ('Nossa quadra possui medidas de 38 metros de comprimento por 18 metros de largura. O piso antiderrapante e macio garante segurança e conforto durante as partidas, e a iluminação ideal permite jogar durante o dia ou à noite sem comprometer a qualidade do jogo.', 'Quadra de Futsal 1', 'photo-futsal', 2);
+values ('Nossa quadra possui medidas de 38 metros de comprimento por 18 metros de largura. O piso antiderrapante e macio garante segurança e conforto durante as partidas, e a iluminação ideal permite jogar durante o dia ou à noite sem comprometer a qualidade do jogo.', 'Quadra de Futsal', 'photo-futsal', 2);
 
 
 insert into "court_rules" ("appointment_duration", "appointment_period", "available_days", "closing_hour", "is_only_ufcg", "opening_hour", "recurrence_interval_period")
