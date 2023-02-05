@@ -170,10 +170,11 @@ public class UserController implements IController {
     }
 
     @PutMapping("/{id}/confirmations")
-    public ResponseEntity<?> userConfirmation(@PathVariable Long idUser) {
+    public ResponseEntity<?> userConfirmation(@PathVariable Long id,
+            @RequestBody UserConfirmationDTO userConfirmationDTO) {
         try {
-            userService.userConfirmation(idUser);
-            return new ResponseEntity<>("Email confirmado com sucesso!", HttpStatus.OK);
+            userService.userConfirmation(id, userConfirmationDTO);
+            return new ResponseEntity<>("Email de resposta ao cadastro foi enviado ao usuário!", HttpStatus.OK);
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }
