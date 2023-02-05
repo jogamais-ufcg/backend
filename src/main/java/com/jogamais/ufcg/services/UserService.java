@@ -35,6 +35,9 @@ public class UserService implements IService<User>, UserDetailsService {
     @Autowired
     private PermissionRepository permissionRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     public User getById(Long id) throws UserException {
         return userRepository.findById(id).orElseThrow(UserException::new);
     }
@@ -49,7 +52,9 @@ public class UserService implements IService<User>, UserDetailsService {
 
     @Override
     public User create(User user) {
-        return userRepository.save(user);
+        userRepository.save(user);
+        emailService.sendConfirmationEmail(user);
+        return user;
 
     }
 
@@ -146,20 +151,13 @@ public class UserService implements IService<User>, UserDetailsService {
         }
     }
 
-    public void userConfirmation(Long id, UserConfirmationDTO userConfirmationDTO) throws UserException {
+    public void userConfirmation(Long id) throws UserException {
         User user = getById(id);
-        user.setIsConfirmed(userConfirmationDTO.getIsConfirmed());
+        user.setIsConfirmed(true);
 
-        if (!userConfirmationDTO.getIsConfirmed()) {
-            deleteById(id);
-        } else {
-            userRepository.save(user);
-        }
-
-        // TODO: Email dizendo se o cadastro foi aceito ou não.
-        // EmailService.sendConfirmationUser(user.getEmail(), user);
-
+        userRepository.save(user);
     }
+
 
     public void deleteById(Long id) throws UserException {
         User user = getById(id);
