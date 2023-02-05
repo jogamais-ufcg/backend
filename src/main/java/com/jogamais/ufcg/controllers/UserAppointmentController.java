@@ -4,17 +4,14 @@ import com.jogamais.ufcg.dto.UserAppointmentDTO;
 import com.jogamais.ufcg.dto.UserAppointmentResponseDTO;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
-import com.jogamais.ufcg.models.CourtRules;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
 import com.jogamais.ufcg.models.pk.AppointmentPK;
 import com.jogamais.ufcg.services.CourtService;
 import com.jogamais.ufcg.services.UserAppointmentService;
 import com.jogamais.ufcg.services.UserService;
-import com.jogamais.ufcg.utils.DateConverter;
 import com.jogamais.ufcg.utils.errors.AppointmentError;
 import com.jogamais.ufcg.utils.errors.CourtError;
-import com.jogamais.ufcg.utils.errors.CustomTypeError;
 import com.jogamais.ufcg.utils.errors.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/appointments/users")
@@ -128,6 +124,8 @@ public class UserAppointmentController implements IController {
             return UserError.errorAppointmentUserHasExisting();
         } catch (InvalidAppointmentDateException e) {
             return AppointmentError.errorAppointmentInvalidDate();
+        } catch (InvalidAppointmentHourException e) {
+            return AppointmentError.errorAppointmentInvalidHour();
         }
 
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);
@@ -160,8 +158,6 @@ public class UserAppointmentController implements IController {
             appointments = userAppointmentService.findAvailableAppointmentsByDayAndCourt(date, court);
         } catch (CourtException e) {
             return CourtError.errorCourtNotExist();
-        } catch (NoAppointmentsException e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
@@ -175,7 +171,7 @@ public class UserAppointmentController implements IController {
             user = userService.getById(idUser);
             appointments = userAppointmentService.getMyAppointments(user);
         } catch (NoAppointmentsException e) {
-            return AppointmentError.errorAppointmentsNotExist();
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }
