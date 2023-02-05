@@ -1,8 +1,10 @@
 package com.jogamais.ufcg.dto;
 
+import com.jogamais.ufcg.models.Permission;
 import com.jogamais.ufcg.models.User;
 import lombok.Getter;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Getter
@@ -17,6 +19,8 @@ public class UserResponseDTO {
     private final Boolean isStudent;
     private final Date validUntil;
 
+    private final Collection<Permission> permissions;
+
     public UserResponseDTO(User user) {
         this.id = user.getId();
         this.name = user.getName();
@@ -27,5 +31,6 @@ public class UserResponseDTO {
         this.isUFCGMember = user.getIsUFCGMember();
         this.isStudent = user.getIsStudent();
         this.validUntil = user.getValidUntil();
+        this.permissions = user.getPermissions();
     }
 }

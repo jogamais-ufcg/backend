@@ -2,6 +2,7 @@ package com.jogamais.ufcg.services;
 
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
+import com.jogamais.ufcg.models.CourtRules;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
 import com.jogamais.ufcg.models.pk.AppointmentPK;
@@ -113,6 +114,45 @@ public class UserAppointmentService {
         }
 
         return filteredAppointments;
+    }
+
+    public List<Integer> findAvailableAppointmentsByDayAndCourt(Date date, Court court) throws NoAppointmentsException {
+        List<UserAppointment> appointments = userRepository.findAllById_Court(court);
+        CourtRules courtRules = court.getCourtRules();
+        Calendar appointmentCalendar = Calendar.getInstance();
+        Calendar dateCalendar = Calendar.getInstance();
+        dateCalendar.setTime(date);
+        List<UserAppointment> filteredAppointments = new ArrayList<>();
+
+        Integer appointmentDuration = (courtRules.getAppointmentDuration()) / 60;
+
+        List<Integer> allAppointmentHoursInADay = new ArrayList<>();
+
+        for (int i = courtRules.getOpeningHour(); i <= (courtRules.getClosingHour()) - appointmentDuration; i += appointmentDuration) {
+            allAppointmentHoursInADay.add(i);
+        }
+
+        for (UserAppointment appointment : appointments) {
+            appointmentCalendar.setTime(appointment.getStartAppointmentDate());
+            if (appointmentCalendar.get(Calendar.DAY_OF_MONTH) == dateCalendar.get(Calendar.DAY_OF_MONTH)
+                    && appointmentCalendar.get(Calendar.MONTH) == dateCalendar.get(Calendar.MONTH)
+                    && appointmentCalendar.get(Calendar.YEAR) == dateCalendar.get(Calendar.YEAR)) {
+                filteredAppointments.add(appointment);
+            }
+        }
+
+        for (UserAppointment filteredAppointment : filteredAppointments) {
+            if (allAppointmentHoursInADay.contains(filteredAppointment.getStartAppointmentDate().getHours())) {
+                int index = allAppointmentHoursInADay.indexOf(filteredAppointment.getStartAppointmentDate().getHours());
+                allAppointmentHoursInADay.remove(index);
+            }
+        }
+
+        if (filteredAppointments.isEmpty()) {
+            throw new NoAppointmentsException();
+        }
+
+        return allAppointmentHoursInADay;
     }
 
     public boolean isAppointmentWithinExistingInterval(UserAppointment newAppointment) {

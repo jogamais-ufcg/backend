@@ -19,8 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -43,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/login/**", "/token/refresh/**").permitAll();
         http.authorizeRequests().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui/**", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui/**", "/h2-console/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/users/**").hasAnyAuthority("USER", "ADMIN");
+        http.authorizeRequests().antMatchers(PATCH, "/users/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/courts/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/users/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
             cors.setAllowedOrigins(List.of("http://localhost:3000", "https://jogamais.vercel.app"));
-            cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;
         });
