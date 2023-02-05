@@ -21,9 +21,16 @@ public class AppointmentError {
 
     static final String INVALID_DATE = "Data de agendamento inválida! Confira o dia e o horário novamente.";
 
+    static final String INVALID_HOUR = "Horário da quadra inválido! Confira os horários de abertura e fechamento.";
+
     public static ResponseEntity<CustomTypeError> errorAppointmentNotExist() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.APPOINTMENT_NOT_EXIST),
                 HttpStatus.NOT_FOUND);
+    }
+
+    public static ResponseEntity<CustomTypeError> errorAppointmentInvalidHour() {
+        return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.INVALID_HOUR),
+                HttpStatus.BAD_REQUEST);
     }
 
     public static ResponseEntity<CustomTypeError> errorAppointmentInvalidDate() {

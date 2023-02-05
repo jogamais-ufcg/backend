@@ -7,7 +7,6 @@ import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
 import com.jogamais.ufcg.models.pk.AppointmentPK;
 import com.jogamais.ufcg.repositories.UserAppointmentRepository;
-import com.jogamais.ufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +38,7 @@ public class UserAppointmentService {
         return userRepository.findById_UserAndId_Court(user, court).orElseThrow(AppointmentException::new);
     }
 
-    public UserAppointment create(UserAppointment userAppointment, User user, Court court) throws AppointmentException, UserAlreadyHasAppointmentException, InvalidAppointmentDateException {
+    public UserAppointment create(UserAppointment userAppointment, User user, Court court) throws AppointmentException, UserAlreadyHasAppointmentException, InvalidAppointmentDateException, InvalidAppointmentHourException {
         LocalDate startDate = userAppointment.getStartAppointmentDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         List<UserAppointment> appointments = userRepository.findAllById_UserAndId_Court(user, court);
 
@@ -57,8 +57,14 @@ public class UserAppointmentService {
             throw new AppointmentException();
         }
 
+
         LocalTime openingHour = LocalTime.of(court.getCourtRules().getOpeningHour(), 0);
         LocalTime closingHour = LocalTime.of(court.getCourtRules().getClosingHour(), 0);
+        LocalTime appointmentTime = userAppointment.getStartAppointmentDate().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+
+        if (appointmentTime.isBefore(openingHour) || appointmentTime.isAfter(closingHour)) {
+            throw new InvalidAppointmentHourException();
+        }
         return userRepository.save(userAppointment);
     }
 
@@ -149,7 +155,7 @@ public class UserAppointmentService {
         }
 
         if (filteredAppointments.isEmpty()) {
-            throw new NoAppointmentsException();
+            return allAppointmentHoursInADay;
         }
 
         return allAppointmentHoursInADay;
