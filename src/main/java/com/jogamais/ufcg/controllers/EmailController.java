@@ -1,7 +1,7 @@
 package com.jogamais.ufcg.controllers;
 
 import com.jogamais.ufcg.dto.EmailDTO;
-import com.jogamais.ufcg.models.EmailModel;
+import com.jogamais.ufcg.models.Email;
 import com.jogamais.ufcg.services.EmailService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class EmailController {
     EmailService emailService;
 
     @PostMapping("/sending-email")
-    public ResponseEntity<EmailModel> sendingEmail(@RequestBody @Valid EmailDTO emailDTO) {
-        EmailModel email = new EmailModel();
+    public ResponseEntity<Email> sendingEmail(@RequestBody @Valid EmailDTO emailDTO) {
+        Email email = new Email();
         BeanUtils.copyProperties(emailDTO, email);
         emailService.sendEmail(email);
 
