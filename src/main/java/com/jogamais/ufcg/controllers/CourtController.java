@@ -53,6 +53,22 @@ public class CourtController implements IController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public ResponseEntity<?> getByName(@PathVariable String name)  {
+        try {
+            Court court = courtService.getByName(name);
+            return new ResponseEntity<>(new CourtResponseDTO(court), HttpStatus.OK);
+        } catch (CourtException e) {
+            return CourtError.errorCourtAlreadyExist();
+        } catch (CourtInvalidOpeningHours e) {
+            return CourtError.errorCourtInvalidOpeningHours();
+        } catch (CourtInvalidRecurrenceIntervalPeriod e) {
+            return CourtError.errorCourtInvalidRecurrenceIntervalPeriod();
+        } catch (CourtInvalidAppointmentDuration e) {
+            return CourtError.errorCourtInvalidAppointmentDuration();
+        }
+    }
+
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody CourtDTO courtDTO) {
         Court createdCourt;

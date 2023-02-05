@@ -58,6 +58,16 @@ public class CourtService implements IService<Court> {
         return courts;
     }
 
+    public Court getByName(String name) throws CourtException, CourtInvalidOpeningHours, CourtInvalidAppointmentDuration, CourtInvalidRecurrenceIntervalPeriod {
+        Court foundCourt = courtRepository.findByName(name);
+        if (foundCourt != null) {
+            throw new CourtException();
+        }
+        validateCourtRulesFields(foundCourt.getCourtRules());
+
+        return foundCourt;
+    }
+
     @Override
     public Page<Court> findAll(PageRequest page) {
         return courtRepository.findAll(PageRequest.of(page.getPageNumber(), 5));
