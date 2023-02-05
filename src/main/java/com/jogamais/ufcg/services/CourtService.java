@@ -34,7 +34,7 @@ public class CourtService implements IService<Court> {
     }
 
     private void validateCourtRulesFields(CourtRules courtRules) throws CourtInvalidOpeningHours, CourtInvalidAppointmentDuration, CourtInvalidRecurrenceIntervalPeriod {
-        if (courtRules.getClosingHour() > courtRules.getOpeningHour()) {
+        if (courtRules.getClosingHour() < courtRules.getOpeningHour()) {
             throw new CourtInvalidOpeningHours();
         }
 
@@ -60,7 +60,7 @@ public class CourtService implements IService<Court> {
 
     public Court getByName(String name) throws CourtException, CourtInvalidOpeningHours, CourtInvalidAppointmentDuration, CourtInvalidRecurrenceIntervalPeriod {
         Court foundCourt = courtRepository.findByName(name);
-        if (foundCourt != null) {
+        if (foundCourt == null) {
             throw new CourtException();
         }
         validateCourtRulesFields(foundCourt.getCourtRules());
