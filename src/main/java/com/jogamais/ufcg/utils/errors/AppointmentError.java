@@ -34,11 +34,6 @@ public class AppointmentError {
                 HttpStatus.CONFLICT);
     }
 
-    public static ResponseEntity<CustomTypeError> errorAppointmentCourtUnavailable() {
-        return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.COURT_UNAVAILABLE),
-                HttpStatus.NOT_FOUND);
-    }
-
     public static ResponseEntity<CustomTypeError> errorAppointmentCancellationNotAllowed() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(AppointmentError.CANCELLATION_NOT_ALLOWED),
                 HttpStatus.FORBIDDEN);

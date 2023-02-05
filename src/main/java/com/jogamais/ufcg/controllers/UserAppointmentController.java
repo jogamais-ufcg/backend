@@ -13,6 +13,7 @@ import com.jogamais.ufcg.services.UserService;
 import com.jogamais.ufcg.utils.DateConverter;
 import com.jogamais.ufcg.utils.errors.AppointmentError;
 import com.jogamais.ufcg.utils.errors.CourtError;
+import com.jogamais.ufcg.utils.errors.CustomTypeError;
 import com.jogamais.ufcg.utils.errors.UserError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -131,17 +133,30 @@ public class UserAppointmentController implements IController {
     public ResponseEntity<?> getAppointmentsByDayAndCourt(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @PathVariable Long idCourt)
             throws CourtException, NoAppointmentsException {
         Court court;
-        try {
-            court = courtService.getById(idCourt);
-        } catch (CourtException e) {
-            return CourtError.errorCourtNotExist();
-        }
-
         List<UserAppointment> appointments;
         try {
+            court = courtService.getById(idCourt);
             appointments = userAppointmentService.findAppointmentsByDayAndCourt(date, court);
+        } catch (CourtException e) {
+            return CourtError.errorCourtNotExist();
         } catch (NoAppointmentsException e) {
-            return AppointmentError.errorAppointmentCourtUnavailable();
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/courts/{idCourt}/available-appointments-day-and-court", method = RequestMethod.GET)
+    public ResponseEntity<?> getAvailableAppointmentsByDayAndCourt(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @PathVariable Long idCourt)
+            throws CourtException, NoAppointmentsException {
+        Court court;
+        List<Integer> appointments;
+        try {
+            court = courtService.getById(idCourt);
+            appointments = userAppointmentService.findAvailableAppointmentsByDayAndCourt(date, court);
+        } catch (CourtException e) {
+            return CourtError.errorCourtNotExist();
+        } catch (NoAppointmentsException e) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
