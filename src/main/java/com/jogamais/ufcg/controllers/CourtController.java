@@ -25,16 +25,6 @@ public class CourtController implements IController {
     @Autowired
     private CourtService courtService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        try {
-            Court court = courtService.getById(id);
-            return new ResponseEntity<>(new CourtResponseDTO(court), HttpStatus.OK);
-        } catch (CourtException e) {
-            return CourtError.errorUnavailableAppointment();
-        }
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         try {
@@ -51,6 +41,22 @@ public class CourtController implements IController {
         List<CourtResponseDTO> response = courtsList.stream().map(CourtResponseDTO::new).toList();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public ResponseEntity<?> getByName(@PathVariable String name)  {
+        try {
+            Court court = courtService.getByName(name);
+            return new ResponseEntity<>(new CourtResponseDTO(court), HttpStatus.OK);
+        } catch (CourtException e) {
+            return CourtError.errorCourtNotExist();
+        } catch (CourtInvalidOpeningHours e) {
+            return CourtError.errorCourtInvalidOpeningHours();
+        } catch (CourtInvalidRecurrenceIntervalPeriod e) {
+            return CourtError.errorCourtInvalidRecurrenceIntervalPeriod();
+        } catch (CourtInvalidAppointmentDuration e) {
+            return CourtError.errorCourtInvalidAppointmentDuration();
+        }
     }
 
     @PostMapping()
