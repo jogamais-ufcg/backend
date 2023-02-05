@@ -124,6 +124,8 @@ public class UserAppointmentController implements IController {
             return AppointmentError.errorAppointmentTimeUnavailable();
         } catch (UserAlreadyHasAppointmentException e) {
             return UserError.errorAppointmentUserHasExisting();
+        } catch (InvalidAppointmentDateException e) {
+            return AppointmentError.errorAppointmentInvalidDate();
         }
 
         UserAppointmentResponseDTO response = new UserAppointmentResponseDTO(createdUserAppointment);

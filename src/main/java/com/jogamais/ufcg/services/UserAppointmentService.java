@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class UserAppointmentService {
         return userRepository.findById_UserAndId_Court(user, court).orElseThrow(AppointmentException::new);
     }
 
-    public UserAppointment create(UserAppointment userAppointment, User user, Court court) throws AppointmentException, UserAlreadyHasAppointmentException {
+    public UserAppointment create(UserAppointment userAppointment, User user, Court court) throws AppointmentException, UserAlreadyHasAppointmentException, InvalidAppointmentDateException {
         LocalDate startDate = userAppointment.getStartAppointmentDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         List<UserAppointment> appointments = userRepository.findAllById_UserAndId_Court(user, court);
 
@@ -47,9 +48,16 @@ public class UserAppointmentService {
             }
         }
 
+        if (userAppointment.getStartAppointmentDate().before(new Date())) {
+            throw new InvalidAppointmentDateException();
+        }
+
         if (this.isAppointmentWithinExistingInterval(userAppointment)) {
             throw new AppointmentException();
         }
+
+        LocalTime openingHour = LocalTime.of(court.getCourtRules().getOpeningHour(), 0);
+        LocalTime closingHour = LocalTime.of(court.getCourtRules().getClosingHour(), 0);
         return userRepository.save(userAppointment);
     }
 
