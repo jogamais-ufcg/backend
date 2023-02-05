@@ -34,7 +34,7 @@ public class CourtService implements IService<Court> {
     }
 
     private void validateCourtRulesFields(CourtRules courtRules) throws CourtInvalidOpeningHours, CourtInvalidAppointmentDuration, CourtInvalidRecurrenceIntervalPeriod {
-        if (courtRules.getOpeningHour() >= courtRules.getClosingHour()) {
+        if (courtRules.getClosingHour() > courtRules.getOpeningHour()) {
             throw new CourtInvalidOpeningHours();
         }
 
