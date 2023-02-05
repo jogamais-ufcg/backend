@@ -47,7 +47,7 @@ insert into "court_rules" ("appointment_duration", "appointment_period", "availa
 values (90, 'string', 'seg,ter,qui,sex', 16, TRUE, 10, 10);
 
 insert into "court" ("description", "name", "photo", "court_rules_id")
-values ('Nossa quadra possui medidas de 38 metros de comprimento por 18 metros de largura. O piso antiderrapante e macio garante segurança e conforto durante as partidas, e a iluminação ideal permite jogar durante o dia ou à noite sem comprometer a qualidade do jogo.', 'Quadra de Futsal', 'photo-futsal', 2);
+values ('Nossa quadra oferece medidas de 38x18m, piso antiderrapante e confortável, com iluminação adequada para jogos diurnos e noturnos.', 'Quadra de Futsal', 'photo-futsal', 2);
 
 
 insert into "court_rules" ("appointment_duration", "appointment_period", "available_days", "closing_hour", "is_only_ufcg", "opening_hour", "recurrence_interval_period")
@@ -61,4 +61,4 @@ insert into "court_rules" ("appointment_duration", "appointment_period", "availa
 values (120, 'string', 'seg,ter,qua,qui,sex', 15, FALSE, 9, 10);
 
 insert into "court" ("description", "name", "photo", "court_rules_id")
-values ('Nossa quadra de tênis oferece espaço adequado para jogadores de todos os níveis. Com medidas padrão de 23,77 metros por 8,23 metros, e o solo é coberto com superfície uniforme para garantir a estabilidade dos jogadores. A iluminação adequada permite jogar durante o dia ou à noite.', 'Quadra de Tênis', 'photo-tennis', 4);
+values ('Nossa quadra de tênis possui medidas padrão de 23,77 metros por 8,23 metros, e o solo é coberto com superfície uniforme para garantir a estabilidade dos jogadores. A iluminação adequada permite jogar durante o dia ou à noite.', 'Quadra de Tênis', 'photo-tennis', 4);
