@@ -6,6 +6,7 @@ import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
 import com.jogamais.ufcg.models.pk.AppointmentPK;
 import com.jogamais.ufcg.repositories.UserAppointmentRepository;
+import com.jogamais.ufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class UserAppointmentService implements IService<UserAppointment> {
+public class UserAppointmentService {
 
     @Autowired
     private UserAppointmentRepository userRepository;
@@ -35,11 +36,15 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return userRepository.findById_UserAndId_Court(user, court).orElseThrow(AppointmentException::new);
     }
 
-    @Override
-    public UserAppointment create(UserAppointment userAppointment) throws AppointmentException, UserAlreadyHasAppointmentException {
+    public UserAppointment create(UserAppointment userAppointment, User user, Court court) throws AppointmentException, UserAlreadyHasAppointmentException {
+        LocalDate startDate = userAppointment.getStartAppointmentDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        List<UserAppointment> appointments = userRepository.findAllById_UserAndId_Court(user, court);
 
-        if (userRepository.existsById_User(userAppointment.getId().getUser())) {
-            throw new UserAlreadyHasAppointmentException();
+        for (UserAppointment appointment : appointments) {
+            LocalDate appointmentStartDate = appointment.getStartAppointmentDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if (appointmentStartDate.getYear() == startDate.getYear() && appointmentStartDate.getMonth() == startDate.getMonth() && appointmentStartDate.getDayOfMonth() == startDate.getDayOfMonth()) {
+                throw new UserAlreadyHasAppointmentException();
+            }
         }
 
         if (this.isAppointmentWithinExistingInterval(userAppointment)) {
@@ -67,12 +72,12 @@ public class UserAppointmentService implements IService<UserAppointment> {
         return daysBetween <= 2;
     }
 
-    @Override
+
     public Page<UserAppointment> search(String searchTerm, int page, int size) {
         return null;
     }
 
-    @Override
+
     public Page<UserAppointment> findAll(PageRequest page) {
         Page<UserAppointment> userAppointmentList = userRepository.findAll(PageRequest.of(page.getPageNumber(), 10));
 

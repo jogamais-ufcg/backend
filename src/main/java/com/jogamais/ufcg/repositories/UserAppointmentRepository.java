@@ -21,4 +21,7 @@ public interface UserAppointmentRepository extends JpaRepository<UserAppointment
     boolean existsById_User(@Param("user") User user);
 
     List<UserAppointment> findAllById_User(User user);
+
+    List<UserAppointment> findAllById_UserAndId_Court(User user, Court court);
+
 }

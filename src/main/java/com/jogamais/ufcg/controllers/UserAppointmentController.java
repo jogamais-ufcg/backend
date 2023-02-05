@@ -4,6 +4,7 @@ import com.jogamais.ufcg.dto.UserAppointmentDTO;
 import com.jogamais.ufcg.dto.UserAppointmentResponseDTO;
 import com.jogamais.ufcg.exceptions.*;
 import com.jogamais.ufcg.models.Court;
+import com.jogamais.ufcg.models.CourtRules;
 import com.jogamais.ufcg.models.User;
 import com.jogamais.ufcg.models.UserAppointment;
 import com.jogamais.ufcg.models.pk.AppointmentPK;
@@ -99,7 +100,7 @@ public class UserAppointmentController implements IController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam int durationInHours, @RequestParam Long idUser,
+    public ResponseEntity<?> create(@RequestBody UserAppointmentDTO userAppointmentDTO, @RequestParam Long idUser,
             @RequestParam Long idCourt) throws UserException, CourtException {
         User user;
         Court court;
@@ -114,10 +115,11 @@ public class UserAppointmentController implements IController {
 
         AppointmentPK appointmentPK = userAppointmentService.createAppointmentPk(user, court);
         UserAppointment createdUserAppointment = userAppointmentDTO.getModel();
-        createdUserAppointment.setAppointmentInterval(userAppointmentDTO.getStartAppointmentDate(), durationInHours);
+        Integer appointmentDuration = court.getCourtRules().getAppointmentDuration();
+        createdUserAppointment.setAppointmentInterval(userAppointmentDTO.getStartAppointmentDate(), appointmentDuration);
         createdUserAppointment.setId(appointmentPK);
         try {
-            userAppointmentService.create(createdUserAppointment);
+            userAppointmentService.create(createdUserAppointment, user, court);
         } catch (AppointmentException e) {
             return AppointmentError.errorAppointmentTimeUnavailable();
         } catch (UserAlreadyHasAppointmentException e) {
@@ -160,7 +162,6 @@ public class UserAppointmentController implements IController {
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }
-        List<UserAppointmentResponseDTO> appointmentResponseDTOS = appointments.stream().map(UserAppointmentResponseDTO::new).collect(Collectors.toList());
-        return new ResponseEntity<>(appointmentResponseDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 }

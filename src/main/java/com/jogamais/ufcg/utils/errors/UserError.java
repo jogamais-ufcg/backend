@@ -20,7 +20,7 @@ public class UserError {
     private static final String INVALID_CPF = "O número de CPF informado é inválido!";
     private static final String INVALID_ENROLLMENT = "O número de matrícula informado é inválido!";
 
-    static final String USER_HAS_EXISTING_APPOINTMENT_ERROR = "Este usuário já possui um agendamento.";
+    static final String USER_HAS_EXISTING_APPOINTMENT_ERROR = "Este usuário já possui um agendamento. Tente outro dia!";
 
     public static ResponseEntity<CustomTypeError> errorUserNotExist() {
         return new ResponseEntity<CustomTypeError>(new CustomTypeError(UserError.USER_NOT_EXIST),

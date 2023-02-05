@@ -28,11 +28,13 @@ public class UserAppointment {
     @Column(name = "PLAYER_LIST", nullable = false)
     private String playerList;
 
-    public void setAppointmentInterval(Date startDate, int durationInHours) {
+    public void setAppointmentInterval(Date startDate, int durationInMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         this.startAppointmentDate = calendar.getTime();
-        calendar.add(Calendar.HOUR_OF_DAY, durationInHours);
+        calendar.add(Calendar.MINUTE, durationInMinutes);
         this.endAppointmentDate = calendar.getTime();
     }
 }
