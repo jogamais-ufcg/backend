@@ -143,7 +143,7 @@ public class UserAppointmentController implements IController {
         } catch (CourtException e) {
             return CourtError.errorCourtNotExist();
         } catch (NoAppointmentsException e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
@@ -171,7 +171,7 @@ public class UserAppointmentController implements IController {
             user = userService.getById(idUser);
             appointments = userAppointmentService.getMyAppointments(user);
         } catch (NoAppointmentsException e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         } catch (UserException e) {
             return UserError.errorUserNotExist();
         }
